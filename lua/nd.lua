@@ -9,6 +9,7 @@ local nd = {
   disable_shortcuts = false, -- Disable all shortcuts
   shortcuts = { -- Set individual shortcuts to false to disable
     linkjump = '<C-]>',
+    sync_links = 'zll'
   },
   note_opts = { -- How to interpret your zettels/headers
     cachepath = '/tmp/zetteltmp',

@@ -125,8 +125,8 @@ links:
 
 ## Todo
 
-* Better telescope integration, make it aware of notes so titles can be displayed nicely
 * Auto-creation of backlinks
+* Better telescope integration, make it aware of notes so titles can be displayed nicely
 * Actions to fill the header of current file with links/tags from zettel contents
 * Some caching mechanism/optimizations/prefetching
 * Telescope alternatives/native tools

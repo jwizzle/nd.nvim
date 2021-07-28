@@ -94,4 +94,17 @@ actions.links_from_note = function ()
   return notes.by_filename(note).links
 end
 
+-- TODO
+-- Eerst iets om links in te voegen
+actions.sync_links = function ()
+  local c_note = notes.by_filename(vim.fn.expand('%:t'))
+
+  for _,  note in pairs(notes.box) do
+    if c_note == note then print('henk') end
+
+    ::continue::
+  end
+  return 'henk'
+end
+
 return actions

@@ -14,6 +14,7 @@ sc.setup = function (opts)
   for k, v in pairs(opts) do sc[k] = v end
 
   if sc.linkjump then sc.map(sc.linkjump, "require('nd').actions.jump()") end
+  if sc.sync_links then sc.map(sc.sync_links, "require('nd').actions.sync_links()") end
 end
 
 return sc
