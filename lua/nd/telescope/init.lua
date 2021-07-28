@@ -1,16 +1,8 @@
-local actions = require('telescope.actions')
-local action_state = require'telescope.actions.state'
 local pickers = require('nd/telescope/pickers')
+local actions = require('nd/telescope/actions')
 local nd = require("nd")
 
 local ts = {}
-
-ts.open_tag = function (prompt_bufnr)
-  local selection = action_state.get_selected_entry()
-  actions.close(prompt_bufnr)
-
-  pickers.table(selection.value, nd.actions.notes_with_tag, {action_param = selection.value})
-end
 
 ts.live_grep = function () require"telescope.builtin".live_grep{search_dirs={nd.dir}} end
 
@@ -23,8 +15,8 @@ ts.find_links_from = function () pickers.table('Links from', nd.actions.links_fr
 ts.find_tags = function ()
   pickers.table('Tags', nd.actions.tags, {
     mappings = function(_, map)
-      map('i', '<cr>', ts.open_tag)
-      map('n', '<cr>', ts.open_tag)
+      map('i', '<cr>', actions.open_tag)
+      map('n', '<cr>', actions.open_tag)
       return true
     end
   })
@@ -33,8 +25,8 @@ end
 ts.find_tags_in_file = function ()
   pickers.table('Tags in file', nd.actions.tags_in, {
     mappings = function(_, map)
-      map('i', '<cr>', ts.open_tag)
-      map('n', '<cr>', ts.open_tag)
+      map('i', '<cr>', actions.open_tag)
+      map('n', '<cr>', actions.open_tag)
       return true
     end
   })
