@@ -14,7 +14,7 @@ p.table = function (title, action, opts)
     map('i', '<cr>', actions.open_note)
     map('n', '<cr>', actions.open_note)
 
-    return false
+    return true
   end
 
   pickers.new {

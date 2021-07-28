@@ -1,5 +1,6 @@
 local actions = require('telescope.actions')
 local action_state = require'telescope.actions.state'
+local notes = require("nd/notes")
 local nd = require("nd")
 
 local a = {}
@@ -14,15 +15,18 @@ end
 
 a.open_note = function (prompt_bufnr)
   local selection = action_state.get_selected_entry()
-  actions.close(prompt_bufnr)
   local filepath = selection.value
+  actions.close(prompt_bufnr)
 
-  if not string.find(selection.value, "/.*") then
+  if not string.find(selection.value, nd.suffix) and not string.find(selection.value, "/") then
+    for _, note in pairs(notes.box) do
+      if note.title == selection.value then
+        filepath = note.path
+        break
+      end
+    end
+  elseif not string.find(selection.value, "^/.*") then
     filepath = nd.dir .. "/" .. selection.value:gsub("%[", ''):gsub("%]", '')
-  end
-
-  if not string.find(selection.value, nd.suffix) then
-    filepath = filepath .. nd.suffix
   end
 
   vim.api.nvim_command(":e " .. filepath)
