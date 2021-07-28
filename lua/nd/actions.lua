@@ -30,7 +30,7 @@ end
 actions.list = function ()
   local t = {}
   for _, v in pairs(notes.box) do
-    table.insert(t, v.title)
+    table.insert(t, v)
   end
   return t
 end
@@ -41,7 +41,7 @@ actions.notes_with_tag = function (tag)
   for k, v in pairs(notes.box) do
     for _, ntag in ipairs(v.tags) do
       if ntag == tag or ntag == '#'..tostring(tag) then
-        table.insert(t, notes.box[k].title)
+        table.insert(t, notes.box[k])
         break
       end
     end
@@ -80,7 +80,7 @@ actions.links_to_note = function ()
   for _, t in pairs(notes.box) do
     for _, l in ipairs(t.links) do
       if string.find(l, " ?%[%[ ?"..note.." ?%]%] ?") then
-        table.insert(file_list, t.title)
+        table.insert(file_list, t)
       end
     end
   end
@@ -88,15 +88,18 @@ actions.links_to_note = function ()
   return file_list
 end
 
--- TODO Make this return fancy titles for every note
 actions.links_from_note = function ()
   local note = vim.fn.expand('%:t')
+  local t = {}
 
-  return notes.by_filename(note).links
+  for _, link in ipairs(notes.by_filename(note).links) do
+    table.insert(t, notes.by_link(link))
+  end
+
+  return t
 end
 
 -- TODO
--- Eerst iets om links in te voegen
 actions.sync_links = function ()
   local c_note = notes.by_filename(vim.fn.expand('%:t'))
 

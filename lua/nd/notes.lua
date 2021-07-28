@@ -58,11 +58,12 @@ notes.to_box = function ()
   end
 end
 
-notes.by_title = function (title)
+notes.by_link = function (link)
   local result = {}
+  local filename = link:gsub("%[", ''):gsub("%]", '')
 
   for _, note in pairs(notes.box) do
-    if note.title == title then
+    if note.path:find(filename) then
       result = note
     end
   end

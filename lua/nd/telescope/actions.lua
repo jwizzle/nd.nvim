@@ -18,7 +18,9 @@ a.open_note = function (prompt_bufnr)
   local filepath = selection.value
   actions.close(prompt_bufnr)
 
-  if not string.find(selection.value, nd.suffix) and not string.find(selection.value, "/") then
+  if (type(selection.value) == "table") then
+    filepath = selection.value.path
+  elseif not string.find(selection.value, nd.suffix) and not string.find(selection.value, "/") then
     for _, note in pairs(notes.box) do
       if note.title == selection.value then
         filepath = note.path

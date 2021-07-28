@@ -1,5 +1,6 @@
 local pickers = require('nd/telescope/pickers')
 local actions = require('nd/telescope/actions')
+local finders = require('telescope.finders')
 local nd = require("nd")
 
 local ts = {}
@@ -18,7 +19,8 @@ ts.find_tags = function ()
       map('i', '<cr>', actions.open_tag)
       map('n', '<cr>', actions.open_tag)
       return true
-    end
+    end,
+    finder = finders.new_table(nd.actions.tags()),
   })
 end
 
@@ -28,7 +30,8 @@ ts.find_tags_in_file = function ()
       map('i', '<cr>', actions.open_tag)
       map('n', '<cr>', actions.open_tag)
       return true
-    end
+    end,
+    finder = finders.new_table(nd.actions.tags()),
   })
 end
 

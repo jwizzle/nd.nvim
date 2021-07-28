@@ -1,8 +1,9 @@
 local pickers = require('telescope.pickers')
 local finders = require('telescope.finders')
-local sorters = require('telescope.sorters')
 local previewers = require('telescope.previewers')
 local actions = require('nd/telescope/actions')
+local entry_display = require("telescope.pickers.entry_display")
+local conf = require("telescope.config").values
 
 local p = {}
 
@@ -17,10 +18,31 @@ p.table = function (title, action, opts)
     return true
   end
 
+  local displayer = entry_display.create({
+    separator = " ",
+    items = { { width = 35 }, { remaining = true } },
+  })
+
+  local make_display = function(entry)
+    return displayer({ entry.value.path, entry.value.title})
+  end
+
+  local newfinder = opts.finder or finders.new_table({
+    results = action(action_param),
+    entry_maker = function(entry)
+      return{
+        value = entry,
+        display = make_display,
+        path = entry.path,
+        ordinal = entry.path .. ' ' .. entry.title
+      }
+    end,
+  })
+
   pickers.new {
     results_title = title,
-    finder = finders.new_table(action(action_param)),
-    sorter = sorters.get_fuzzy_file(),
+    finder = newfinder,
+    sorter = conf.generic_sorter({}),
     previewer = previewers.vim_buffer_cat.new({}),
     attach_mappings = mappings,
   }:find()
