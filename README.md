@@ -125,6 +125,7 @@ links:
 
 ## Todo
 
+* Insert links in files from a telescope picker
 * Auto-creation of backlinks
 * Better telescope integration, make it aware of notes so titles can be displayed nicely
 * Actions to fill the header of current file with links/tags from zettel contents
