@@ -21,6 +21,12 @@ Most of the functionality I was looking for myself has been implemented, the res
 * Should work out of the box, while being customizable enough to work around differences in zettelkasten set-ups
   * Most heavy-lifting is done by configurable lua pattern strings
 
+### Showcase
+
+Nicely displays how this is at a usable point, yet still kinda wonky with telescope previewers not acting as expected and such.
+
+[![asciicast](https://asciinema.org/a/427634.svg)](https://asciinema.org/a/427634)
+
 ## Installation
 
 ```lua
