@@ -17,6 +17,7 @@ Most of the functionality I was looking for myself has been implemented, the res
   * Explore linked notes with telescope
   * Navigate tags and notes that include them
 * Create new zettels from a template with placeholders for title and date
+* Pick a note from telescope, insert a link to it under cursor
 * Jump to links under your cursor
 * Should work out of the box, while being customizable enough to work around differences in zettelkasten set-ups
   * Most heavy-lifting is done by configurable lua pattern strings
@@ -47,6 +48,7 @@ vim.api.nvim_set_keymap('n', '<leader>zn', "<cmd>lua require('nd').actions.new()
 vim.api.nvim_set_keymap('n', '<leader>zf', "<cmd>lua require('nd/telescope').find_notes()<CR>", {})
 vim.api.nvim_set_keymap('n', '<leader>zlt', "<cmd>lua require('nd/telescope').find_links_to()<CR>", {})
 vim.api.nvim_set_keymap('n', '<leader>zlf', "<cmd>lua require('nd/telescope').find_links_from()<CR>", {})
+vim.api.nvim_set_keymap('n', '<leader>zll', "<cmd>lua require('nd/telescope').insert_link()<CR>", {})
 vim.api.nvim_set_keymap('n', '<leader>zt', "<cmd>lua require('nd/telescope').find_tags()<CR>", {})
 vim.api.nvim_set_keymap('n', '<leader>zr', '<cmd>lua require("nd/telescope").live_grep()<CR>', {})
 ```
@@ -126,8 +128,8 @@ links:
 
 ## Todo
 
-* Insert links in files from a telescope picker
 * Auto-creation of backlinks
+* More telescope shortcuts
 * Actions to fill the header of current file with links/tags from zettel contents
 * Some caching mechanism/optimizations/prefetching
 * Telescope alternatives/native tools
