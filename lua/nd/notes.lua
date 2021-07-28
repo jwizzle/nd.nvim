@@ -42,6 +42,7 @@ notes.extract_one = function(path)
   local date = string.match(header, notes.date_pattern)
   local tags = notes.tags_from_header(header)
   local links = notes.links_from_header(header)
+  local link = "[["..string.match(path, "[/%g+]+/(%g+)$").."]]"
 
   notes.box[title] = {
     tags = tags,
@@ -49,6 +50,7 @@ notes.extract_one = function(path)
     title = title,
     links = links,
     path = path,
+    link = link,
   }
 end
 

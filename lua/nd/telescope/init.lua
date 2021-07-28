@@ -13,6 +13,15 @@ ts.find_links_to = function () pickers.table('Links to', nd.actions.links_to_not
 
 ts.find_links_from = function () pickers.table('Links from', nd.actions.links_from_note) end
 
+ts.insert_link = function () pickers.table('Insert link', nd.actions.list, {
+    mappings = function(_, map)
+      map('i', '<cr>', actions.insert_link)
+      map('n', '<cr>', actions.insert_link)
+      return true
+    end,
+  })
+end
+
 ts.find_tags = function ()
   pickers.table('Tags', nd.actions.tags, {
     mappings = function(_, map)

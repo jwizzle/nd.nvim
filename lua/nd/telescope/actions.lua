@@ -5,6 +5,15 @@ local nd = require("nd")
 
 local a = {}
 
+a.insert_link = function (prompt_bufnr)
+  local selection = action_state.get_selected_entry()
+  actions.close(prompt_bufnr)
+
+  vim.cmd(string.format([[
+      exe "normal! a%s \<Esc>"
+    ]], selection.value.link))
+end
+
 a.open_tag = function (prompt_bufnr)
   local selection = action_state.get_selected_entry()
   actions.close(prompt_bufnr)
