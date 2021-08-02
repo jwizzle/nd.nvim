@@ -1,5 +1,4 @@
 local nd = require("nd")
-local box = require("nd/box")
 local utils = require("nd/utils")
 local actions = {}
 
@@ -29,7 +28,7 @@ end
 
 actions.list = function ()
   local t = {}
-  for _, v in pairs(box.box) do
+  for _, v in pairs(nd.box.notes) do
     table.insert(t, v)
   end
   return t
@@ -38,10 +37,10 @@ end
 actions.notes_with_tag = function (tag)
   local t = {}
 
-  for k, v in pairs(box.box) do
+  for k, v in pairs(nd.box.notes) do
     for _, ntag in ipairs(v.tags) do
       if ntag == tag or ntag == '#'..tostring(tag) then
-        table.insert(t, box.box[k])
+        table.insert(t, nd.box.notes[k])
         break
       end
     end
@@ -54,7 +53,7 @@ actions.tags = function ()
   local t = {}
   local list = {}
 
-  for _, v in pairs(box.box) do
+  for _, v in pairs(nd.box.notes) do
     for _, tag in ipairs(v.tags) do
       t[tag] = true
     end
@@ -70,14 +69,14 @@ end
 actions.tags_in = function ()
   local note = vim.fn.expand('%:t')
 
-  return box.by_filename(note).tags
+  return nd.box.by_filename(note).tags
 end
 
 actions.links_to_note = function ()
   local note = vim.fn.expand('%:t')
   local file_list = {}
 
-  for _, t in pairs(box.box) do
+  for _, t in pairs(nd.box.notes) do
     for _, l in ipairs(t.links) do
       if string.find(l, " ?%[%[ ?"..note.." ?%]%] ?") then
         table.insert(file_list, t)
@@ -92,8 +91,8 @@ actions.links_from_note = function ()
   local note = vim.fn.expand('%:t')
   local t = {}
 
-  for _, link in ipairs(box.by_filename(note).links) do
-    table.insert(t, box.by_link(link))
+  for _, link in ipairs(nd.box.by_filename(note).links) do
+    table.insert(t, nd.box.by_link(link))
   end
 
   return t
@@ -103,7 +102,7 @@ end
 actions.sync_links = function ()
   local c_note = box.by_filename(vim.fn.expand('%:t'))
 
-  for _,  note in pairs(box.box) do
+  for _,  note in pairs(nd.box.notes) do
     if c_note == note then print('henk') end
 
     ::continue::

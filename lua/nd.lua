@@ -1,5 +1,3 @@
-local box = require('nd/box')
-
 local nd = {
   dir = '~/zettelkasten', -- Your zettelkast directory
   open_new = true, -- Instantly open a newly created zettel
@@ -69,10 +67,8 @@ nd.setup = function (opts)
   nd.load_patterns()
 
   -- Initialize notes
-  local note_opts = nd.note_opts
-  note_opts.dir = nd.dir
-  note_opts.suffix = nd.suffix
-  box.setup(note_opts)
+  require('nd/box')
+  nd.box = Box:setup()
 
   -- Load actions
   nd.actions = require("nd/actions")

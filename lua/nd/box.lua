@@ -1,23 +1,25 @@
-local utils = require('nd/utils')
+require('nd/note')
 
-local notes = {
-  box = {},
-  files = {},
+local utils = require('nd/utils')
+local nd = require('nd')
+
+Box = {
+  notes = {}
 }
 
-notes.gather = function ()
-  local output = utils.os_capture('find '..notes.dir.." -type f -not -path '*/\\.git/*'")
-  for filename in string.gmatch(output, "/%g+" .. notes.suffix) do
+function Box:gather ()
+  local output = utils.os_capture('find '..nd.dir.." -type f -not -path '*/\\.git/*'")
+  for filename in string.gmatch(output, "/%g+" .. nd.suffix) do
     local newnote = Note:from_path(filename)
-    notes.box[newnote.title] = newnote
+    self.notes[newnote.title] = newnote
   end
 end
 
-notes.by_link = function (link)
+function Box:by_link (link)
   local result = {}
   local filename = link:gsub("%[", ''):gsub("%]", '')
 
-  for _, note in pairs(notes.box) do
+  for _, note in pairs(self) do
     if note.path:find(filename) then
       result = note
     end
@@ -26,10 +28,10 @@ notes.by_link = function (link)
   return result
 end
 
-notes.by_filename = function (filename)
+function Box:by_filename (filename)
   local result = {}
 
-  for _, note in pairs(notes.box) do
+  for _, note in pairs(self) do
     if string.find(note.path, filename) then
       result = note
     end
@@ -38,12 +40,11 @@ notes.by_filename = function (filename)
   return result
 end
 
-notes.setup = function (opts)
+function Box:setup (opts)
   opts = opts or {}
-  for k, v in pairs(opts) do notes[k] = v end
+  for k, v in pairs(opts) do self[k] = v end
 
-  require('nd/note')
-  notes.gather()
+  self:gather()
+
+  return self
 end
-
-return notes
