@@ -1,6 +1,6 @@
 local actions = require('telescope.actions')
 local action_state = require'telescope.actions.state'
-local notes = require("nd/notes")
+local box = require("nd/box")
 local nd = require("nd")
 
 local a = {}
@@ -30,7 +30,7 @@ a.open_note = function (prompt_bufnr)
   if (type(selection.value) == "table") then
     filepath = selection.value.path
   elseif not string.find(selection.value, nd.suffix) and not string.find(selection.value, "/") then
-    for _, note in pairs(notes.box) do
+    for _, note in pairs(box.box) do
       if note.title == selection.value then
         filepath = note.path
         break

@@ -128,6 +128,8 @@ links:
 
 ## Todo
 
+* Creating notes should update the object/handle this smarter
+* Links should work with both titles and filenames
 * Auto-creation of backlinks
 * More telescope shortcuts
 * Actions to fill the header of current file with links/tags from zettel contents

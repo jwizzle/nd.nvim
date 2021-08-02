@@ -1,4 +1,4 @@
-local notes = require('nd/notes')
+local box = require('nd/box')
 
 local nd = {
   dir = '~/zettelkasten', -- Your zettelkast directory
@@ -72,7 +72,7 @@ nd.setup = function (opts)
   local note_opts = nd.note_opts
   note_opts.dir = nd.dir
   note_opts.suffix = nd.suffix
-  notes.setup(note_opts)
+  box.setup(note_opts)
 
   -- Load actions
   nd.actions = require("nd/actions")

@@ -20,7 +20,7 @@ p.table = function (title, action, opts)
 
   local displayer = entry_display.create({
     separator = " ",
-    items = { { width = 35 }, { remaining = true } },
+    items = { { width = 45 }, { remaining = true } },
   })
 
   local make_display = function(entry)
