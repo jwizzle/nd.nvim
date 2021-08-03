@@ -1,5 +1,9 @@
 require('nd/note')
 
+local async_lib = require "plenary.async_lib"
+local async = async_lib.async
+local run = async_lib.run
+local await = async_lib.await
 local utils = require('nd/utils')
 local nd = require('nd')
 
@@ -8,16 +12,17 @@ Box = {
 }
 
 function Box:gather_async ()
-  local gather = coroutine.create(function ()
+  local gather = async(function ()
+    await(async_lib.scheduler())
     local output = utils.os_capture('find '..nd.dir.." -type f -not -path '*/\\.git/*'")
+
     for filename in string.gmatch(output, "/%g+" .. nd.suffix) do
       local newnote = Note:from_path(filename)
       Box.notes[newnote.title] = newnote
     end
-    coroutine.yield()
   end)
 
-  coroutine.resume(gather)
+  run(gather())
 end
 
 function Box:by_link (link)
