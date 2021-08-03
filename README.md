@@ -12,7 +12,7 @@ Most of the functionality I was looking for myself has been implemented, the res
 
 ### Available goodies
 
-* Creates a table with information about your zettels to make navigation a breeze
+* Creates a table with information about your zettels to make navigation a breeze (asynchronously/non-blocking)
   * Search through your zettels with telescope live_grep and find_files from any directory
   * Explore linked notes with telescope
   * Navigate tags and notes that include them
