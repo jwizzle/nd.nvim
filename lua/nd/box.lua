@@ -9,6 +9,7 @@ local nd = require('nd')
 
 Box = {
   notes = {},
+  gathering = false,
 }
 
 function Box:gather_async ()
@@ -20,9 +21,11 @@ function Box:gather_async ()
       local newnote = Note:from_path(filename)
       Box.notes[newnote.title] = newnote
     end
+
+    self.gathering = false
   end)
 
-  run(gather())
+  if not self.gathering then run(gather()); self.gathering = true end
 end
 
 function Box:by_link (link)
