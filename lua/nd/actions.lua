@@ -22,6 +22,7 @@ actions.new = function ()
     }))
   file:close()
   print('Created ' .. filepath)
+  nd.box:gather_async()
 
   if nd.open_new then vim.api.nvim_command(":e " .. filepath) end
 end
@@ -69,7 +70,7 @@ end
 actions.tags_in = function ()
   local note = vim.fn.expand('%:t')
 
-  return nd.box.by_filename(note).tags
+  return nd.box:by_filename(note).tags
 end
 
 actions.links_to_note = function ()
@@ -91,8 +92,8 @@ actions.links_from_note = function ()
   local note = vim.fn.expand('%:t')
   local t = {}
 
-  for _, link in ipairs(nd.box.by_filename(note).links) do
-    table.insert(t, nd.box.by_link(link))
+  for _, link in ipairs(nd.box:by_filename(note).links) do
+    table.insert(t, nd.box:by_link(link))
   end
 
   return t

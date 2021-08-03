@@ -4,22 +4,27 @@ local utils = require('nd/utils')
 local nd = require('nd')
 
 Box = {
-  notes = {}
+  notes = {},
 }
 
-function Box:gather ()
-  local output = utils.os_capture('find '..nd.dir.." -type f -not -path '*/\\.git/*'")
-  for filename in string.gmatch(output, "/%g+" .. nd.suffix) do
-    local newnote = Note:from_path(filename)
-    self.notes[newnote.title] = newnote
-  end
+function Box:gather_async ()
+  local gather = coroutine.create(function ()
+    local output = utils.os_capture('find '..nd.dir.." -type f -not -path '*/\\.git/*'")
+    for filename in string.gmatch(output, "/%g+" .. nd.suffix) do
+      local newnote = Note:from_path(filename)
+      Box.notes[newnote.title] = newnote
+    end
+    coroutine.yield()
+  end)
+
+  coroutine.resume(gather)
 end
 
 function Box:by_link (link)
   local result = {}
   local filename = link:gsub("%[", ''):gsub("%]", '')
 
-  for _, note in pairs(self) do
+  for _, note in pairs(self.notes) do
     if note.path:find(filename) then
       result = note
     end
@@ -31,7 +36,7 @@ end
 function Box:by_filename (filename)
   local result = {}
 
-  for _, note in pairs(self) do
+  for _, note in pairs(self.notes) do
     if string.find(note.path, filename) then
       result = note
     end
@@ -44,7 +49,7 @@ function Box:setup (opts)
   opts = opts or {}
   for k, v in pairs(opts) do self[k] = v end
 
-  self:gather()
+  self:gather_async()
 
   return self
 end

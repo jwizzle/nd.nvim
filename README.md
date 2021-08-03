@@ -128,7 +128,6 @@ links:
 
 ## Todo
 
-* Creating notes should update the object/handle this smarter
 * Links should work with both titles and filenames
 * Auto-creation of backlinks
 * More telescope shortcuts
