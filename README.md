@@ -67,7 +67,9 @@ tags: //not necessarily required in this format, just tag tags with #
   - #tag1
   - #tag2
 links: // note required in this format, just mark links with [[]]
-  - note2: [[214806_20210714_note2.md]]
+  - note2: [[214806_20210714_note2.md]] //Links can contain the full filename
+
+[[note2]] // links can also contain just the title and be placed anywhere. The lists in this example aren't mandatory.
 ---
 
 # title
@@ -89,24 +91,18 @@ require('nd').setup({
   disable_shortcuts = false, -- Disable all shortcuts
   shortcuts = { -- Set individual shortcuts to false to disable
     linkjump = '<C-]>',
+    sync_links = 'zll'
   },
   note_opts = { -- How to interpret your zettels/headers
     cachepath = '/tmp/zetteltmp',
-    pattern_set = 'plain', -- The pattern set to use, see the README for more info
-    pattern_sets = { -- Can be expanded on
+    pattern_set = 'plain', -- The pattern set to use, can be overridden individually
+    pattern_sets = { -- Can be expanded on, mostly here for legacy reasons
       plain = {
         header_pattern = "%-%-%-(.-)%-%-%-", -- How to find the header in your zettel
         link_pattern = "(%[%[%g+%]%])", -- How to identify links in your header
         tag_pattern = "(#[%g ]+)", -- How to identify tags in your header
         title_pattern = "title: (.-)\n", -- How to identify the title in your header
         date_pattern = "date: (.-)\n", -- How to identify the date in your header
-      },
-      notitiedoos = {
-        header_pattern = "%-%-%-(.-)%-%-%-",
-        link_pattern = "- ?([%g ]+): (%[%[%g+%]%])",
-        tag_pattern = "- ?(#[%g ]+)",
-        title_pattern = "title: (.-)\n",
-        date_pattern = "date: (.-)\n",
       },
     },
     -- Overwrite individual patterns of a set by defining them directly in note_opts
@@ -123,12 +119,10 @@ links:
 # ${title}
 
 ]], -- Template for new zettels, can interpolate date and title
-})
 ```
 
 ## Todo
 
-* Links should work with both titles and filenames
 * Auto-creation of backlinks
 * More telescope shortcuts
 * Actions to fill the header of current file with links/tags from zettel contents

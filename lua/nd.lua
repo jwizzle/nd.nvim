@@ -11,21 +11,14 @@ local nd = {
   },
   note_opts = { -- How to interpret your zettels/headers
     cachepath = '/tmp/zetteltmp',
-    pattern_set = 'plain', -- The pattern set to use, see the README for more info
-    pattern_sets = { -- Can be expanded on
+    pattern_set = 'plain', -- The pattern set to use, can be overridden individually
+    pattern_sets = { -- Can be expanded on, mostly here for legacy reasons
       plain = {
         header_pattern = "%-%-%-(.-)%-%-%-", -- How to find the header in your zettel
         link_pattern = "(%[%[%g+%]%])", -- How to identify links in your header
         tag_pattern = "(#[%g ]+)", -- How to identify tags in your header
         title_pattern = "title: (.-)\n", -- How to identify the title in your header
         date_pattern = "date: (.-)\n", -- How to identify the date in your header
-      },
-      notitiedoos = {
-        header_pattern = "%-%-%-(.-)%-%-%-",
-        link_pattern = "- ?([%g ]+): (%[%[%g+%]%])",
-        tag_pattern = "- ?(#[%g ]+)",
-        title_pattern = "title: (.-)\n",
-        date_pattern = "date: (.-)\n",
       },
     },
     -- Overwrite individual patterns of a set by defining them directly in note_opts
