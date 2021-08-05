@@ -24,10 +24,7 @@ Most of the functionality I was looking for myself has been implemented, the res
 
 ### Showcase
 
-Nicely displays how this is at a usable point, yet still kinda wonky with telescope previewers not acting as expected and such.
-Update: Previewers now work as expected while displaying nice titles of notes to search through. This needs to be updated still.
-
-[![asciicast](https://asciinema.org/a/427634.svg)](https://asciinema.org/a/427634)
+[![asciicast](https://asciinema.org/a/Pdwr4B2nHDyOA6ovi5SxvnICf.svg)](https://asciinema.org/a/Pdwr4B2nHDyOA6ovi5SxvnICf)
 
 ## Installation
 
