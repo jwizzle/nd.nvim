@@ -53,6 +53,18 @@ function Box:by_filename (filename)
   return result
 end
 
+function Box:by_title (title)
+  local result = {}
+
+  for _, note in pairs(self.notes) do
+    if string.find(note.title, title) then
+      result = note
+    end
+  end
+
+  return result
+end
+
 function Box:setup (opts)
   opts = opts or {}
   for k, v in pairs(opts) do self[k] = v end
