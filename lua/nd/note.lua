@@ -1,4 +1,5 @@
 local nd = require('nd')
+require('nd/link')
 
 Note = {
   tags = {},
@@ -29,13 +30,8 @@ function Note:from_path(path)
   end
   local links_from_header = function()
     local t = {}
-    for name, link in string.gmatch(header, nd.note_opts.link_pattern) do
-      if not link then
-        -- This is actually the link in these cases
-        table.insert(t, name)
-      else
-        t[name] = link
-      end
+    for link in string.gmatch(header, nd.note_opts.link_pattern) do
+      table.insert(t, Link:from_text(link))
     end
     return t
   end

@@ -1,13 +1,11 @@
 local nd = require("nd")
 local utils = require("nd/utils")
 local actions = {}
+require('nd/link')
 
 actions.jump = function ()
-  local link = vim.fn.expand('<cWORD>')
-  local filename = string.match(link, "%[%[(.-)%]%]")
-  local filepath = nd.dir .. "/" .. filename
-
-  vim.api.nvim_command(":e " .. filepath)
+  local link = Link:from_text(vim.fn.expand('<cWORD>'))
+  vim.api.nvim_command(":e " .. link.target)
 end
 
 actions.new = function ()
@@ -74,12 +72,12 @@ actions.tags_in = function ()
 end
 
 actions.links_to_note = function ()
-  local note = vim.fn.expand('%:t')
+  local note = nd.box:by_filename(vim.fn.expand('%:t'))
   local file_list = {}
 
   for _, t in pairs(nd.box.notes) do
     for _, l in ipairs(t.links) do
-      if string.find(l, " ?%[%[ ?"..note.." ?%]%] ?") then
+      if l.target == note.path then
         table.insert(file_list, t)
       end
     end
@@ -89,11 +87,11 @@ actions.links_to_note = function ()
 end
 
 actions.links_from_note = function ()
-  local note = vim.fn.expand('%:t')
+  local note = nd.box:by_filename(vim.fn.expand('%:t'))
   local t = {}
 
-  for _, link in ipairs(nd.box:by_filename(note).links) do
-    table.insert(t, nd.box:by_link(link))
+  for _, link in ipairs(note.links) do
+    table.insert(t, nd.box:by_filename(link.target))
   end
 
   return t

@@ -28,25 +28,13 @@ function Box:gather_async ()
   if not self.gathering then run(gather()); self.gathering = true end
 end
 
-function Box:by_link (link)
-  local result = {}
-  local filename = link:gsub("%[", ''):gsub("%]", '')
-
-  for _, note in pairs(self.notes) do
-    if note.path:find(filename) then
-      result = note
-    end
-  end
-
-  return result
-end
-
 function Box:by_filename (filename)
   local result = {}
 
   for _, note in pairs(self.notes) do
     if string.find(note.path, filename) then
       result = note
+      break
     end
   end
 
@@ -59,6 +47,7 @@ function Box:by_title (title)
   for _, note in pairs(self.notes) do
     if string.find(note.title, title) then
       result = note
+      break
     end
   end
 

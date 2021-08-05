@@ -17,9 +17,9 @@ function Link:from_text (text)
   local content = text:match("%[%[(.-)%]%]")
 
   if content:find(nd.suffix) then
-    target = nd.dir .. "/" .. content
+    target = nd.dir .. '/' .. content
   else
-    target = nd.box:by_title(content)
+    target = nd.box:by_title(content).path
   end
 
 
