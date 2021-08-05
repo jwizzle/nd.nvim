@@ -10,8 +10,9 @@ end
 
 actions.new = function ()
   local title = vim.fn.input('Title: ')
+  local filename = title:gsub(" ", "_")
   local prefix = os.date(nd.prefix) .. '_'
-  local filepath = nd.dir .. "/" .. prefix .. title .. nd.suffix
+  local filepath = nd.dir .. "/" .. prefix .. filename .. nd.suffix
 
   local file = assert(io.open(filepath, "w"))
   file:write(utils.interp(nd.header,  {

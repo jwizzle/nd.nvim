@@ -26,6 +26,9 @@ Most of the functionality I was looking for myself has been implemented, the res
 
 [![asciicast](https://asciinema.org/a/Pdwr4B2nHDyOA6ovi5SxvnICf.svg)](https://asciinema.org/a/Pdwr4B2nHDyOA6ovi5SxvnICf)
 
+Spoiler: when adding a new zettel you see me hessitate to name it 'note 3' instead of 'note3'. At that moment I realized it would create the file with a space, which is horrendous. This is now fixed, if you input the title with a space the header title will contain a space. In the filename this is replaced by an underscore.
+I am too lazy to record it anew.
+
 ## Installation
 
 ```lua
