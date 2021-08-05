@@ -14,7 +14,7 @@ end
 
 function Link:from_text (text)
   local target
-  local content = text:match("%[%[(.-)%]%]")
+  local content = text:gsub("%[", ''):gsub("%]", '')
 
   if content:find(nd.suffix) then
     target = nd.dir .. '/' .. content

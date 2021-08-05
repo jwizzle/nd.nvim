@@ -68,8 +68,9 @@ tags: //not necessarily required in this format, just tag tags with #
   - #tag2
 links: // note required in this format, just mark links with [[]]
   - note2: [[214806_20210714_note2.md]] //Links can contain the full filename
+  - [[note3]] // links can also contain just the title
 
-[[note2]] // links can also contain just the title and be placed anywhere. The lists in this example aren't mandatory.
+[[note 4]] // The list structure i use also isn't mandatory and you can use spaces in titles
 ---
 
 # title
