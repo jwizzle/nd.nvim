@@ -77,12 +77,13 @@ actions.tags_in = function ()
 end
 
 actions.links_to_note = function ()
-  local note = nd.box:by_filename(vim.fn.expand('%:t'))
+  local note = nd.box:by_filename(vim.fn.expand('%:t')):sync()
   local file_list = {}
 
   for _, t in pairs(nd.box.notes) do
     for _, l in ipairs(t.links) do
       if l.target == note.path then
+        t:sync()
         table.insert(file_list, t)
       end
     end
@@ -92,7 +93,7 @@ actions.links_to_note = function ()
 end
 
 actions.links_from_note = function ()
-  local note = nd.box:by_filename(vim.fn.expand('%:t'))
+  local note = nd.box:by_filename(vim.fn.expand('%:t')):sync()
   local t = {}
 
   for _, link in ipairs(note.links) do
@@ -104,7 +105,8 @@ end
 
 -- TODO
 actions.sync_links = function ()
-  local c_note = nd.box:by_filename(vim.fn.expand('%:t'))
+  local c_note = nd.box:by_filename(vim.fn.expand('%:t')):sync()
+
   for _, l in ipairs(c_note.links) do
     local target_note = nd.box:by_filename(l.target)
     if target_note:has_link(c_note) then

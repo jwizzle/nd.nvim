@@ -10,6 +10,15 @@ Note = {
   link = '',
 }
 
+function Note:sync()
+  local newnote = Note:from_path(self.path)
+  newnote:parse_links()
+
+  nd.box.notes[self.title] = newnote
+
+  return newnote
+end
+
 function Note:has_link(note)
   local b = false
   for _, l in pairs(self.links) do
