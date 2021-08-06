@@ -21,24 +21,12 @@ a.open_tag = function (prompt_bufnr)
   pickers.table(selection.value, nd.actions.notes_with_tag, {action_param = selection.value})
 end
 
--- TODO Recheck this
 a.open_note = function (prompt_bufnr)
   local selection = action_state.get_selected_entry()
   local filepath = selection.value
   actions.close(prompt_bufnr)
 
-  if (type(selection.value) == "table") then
-    filepath = selection.value.path
-  elseif not string.find(selection.value, nd.suffix) and not string.find(selection.value, "/") then
-    for _, note in pairs(nd.box) do
-      if note.title == selection.value then
-        filepath = note.path
-        break
-      end
-    end
-  elseif not string.find(selection.value, "^/.*") then
-    filepath = nd.dir .. "/" .. selection.value:gsub("%[", ''):gsub("%]", '')
-  end
+  filepath = selection.value.path
 
   vim.api.nvim_command(":e " .. filepath)
 end
