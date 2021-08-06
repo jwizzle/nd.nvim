@@ -100,14 +100,15 @@ end
 
 -- TODO
 actions.sync_links = function ()
-  local c_note = box.by_filename(vim.fn.expand('%:t'))
-
-  for _,  note in pairs(nd.box.notes) do
-    if c_note == note then print('henk') end
-
-    ::continue::
+  local c_note = nd.box:by_filename(vim.fn.expand('%:t'))
+  for _, l in ipairs(c_note.links) do
+    local target_note = nd.box:by_filename(l.target)
+    if target_note:has_link(c_note) then
+      print('ja!')
+    else
+      print('nee!')
+    end
   end
-  return 'henk'
 end
 
 return actions

@@ -21,6 +21,7 @@ a.open_tag = function (prompt_bufnr)
   pickers.table(selection.value, nd.actions.notes_with_tag, {action_param = selection.value})
 end
 
+-- TODO Recheck this
 a.open_note = function (prompt_bufnr)
   local selection = action_state.get_selected_entry()
   local filepath = selection.value

@@ -22,6 +22,10 @@ function Box:gather_async ()
       Box.notes[newnote.title] = newnote
     end
 
+    for _, n in pairs(Box.notes) do
+      n:parse_links()
+    end
+
     self.gathering = false
   end)
 
@@ -45,7 +49,7 @@ function Box:by_title (title)
   local result = {}
 
   for _, note in pairs(self.notes) do
-    if string.find(note.title, title) then
+    if string.find(note.title:lower(), title:lower()) then
       result = note
       break
     end

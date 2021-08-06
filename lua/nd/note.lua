@@ -10,9 +10,28 @@ Note = {
   link = '',
 }
 
+function Note:has_link(note)
+  local b = false
+  for _, l in pairs(self.links) do
+    if l.target == note.path then
+      b = true
+      break
+    end
+  end
+  return b
+end
+
+function Note:parse_links()
+  for i, l in ipairs(self.links) do
+    self.links[i] = Link:from_text(l)
+  end
+end
+
 function Note:new (opts)
   opts = opts or {}
+
   setmetatable(opts, self)
+  self.__index = self
 
   return opts
 end
@@ -31,7 +50,7 @@ function Note:from_path(path)
   local links_from_header = function()
     local t = {}
     for link in string.gmatch(header, nd.note_opts.link_pattern) do
-      table.insert(t, Link:from_text(link))
+      table.insert(t, link)
     end
     return t
   end

@@ -124,6 +124,7 @@ links:
 
 ## Todo
 
+* Sync more often, or create an action to reload notes
 * Auto-creation of backlinks
 * More telescope shortcuts
 * Actions to fill the header of current file with links/tags from zettel contents

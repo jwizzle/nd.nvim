@@ -22,7 +22,6 @@ function Link:from_text (text)
     target = nd.box:by_title(content).path
   end
 
-
   return self:new({
       text = text,
       target = target
