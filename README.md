@@ -45,6 +45,7 @@ require('nd').setup()
 
 ```lua
 vim.api.nvim_set_keymap('n', '<leader>zn', "<cmd>lua require('nd').actions.new()<CR>", {})
+vim.api.nvim_set_keymap('n', '<leader>zg', "<cmd>lua require('nd').actions.gather()<CR>", {})
 vim.api.nvim_set_keymap('n', '<leader>zf', "<cmd>lua require('nd/telescope').find_notes()<CR>", {})
 vim.api.nvim_set_keymap('n', '<leader>zlt', "<cmd>lua require('nd/telescope').find_links_to()<CR>", {})
 vim.api.nvim_set_keymap('n', '<leader>zlf', "<cmd>lua require('nd/telescope').find_links_from()<CR>", {})
@@ -124,7 +125,6 @@ links:
 
 ## Todo
 
-* Sync more often, or create an action to reload notes
 * Auto-creation of backlinks
 * More telescope shortcuts
 * Actions to fill the header of current file with links/tags from zettel contents

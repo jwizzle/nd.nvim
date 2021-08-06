@@ -26,6 +26,10 @@ actions.new = function ()
   if nd.open_new then vim.api.nvim_command(":e " .. filepath) end
 end
 
+actions.gather = function ()
+  nd.box:gather_async()
+end
+
 actions.list = function ()
   local t = {}
   for _, v in pairs(nd.box.notes) do
