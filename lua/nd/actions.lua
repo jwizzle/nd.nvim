@@ -10,6 +10,9 @@ end
 
 actions.new = function ()
   local title = vim.fn.input('Title: ')
+  if title == nil or title == '' then
+    return
+  end
   local filename = title:gsub(" ", "_")
   local prefix = os.date(nd.prefix) .. '_'
   local filepath = nd.dir .. "/" .. prefix .. filename .. nd.suffix
