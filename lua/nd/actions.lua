@@ -103,7 +103,8 @@ actions.links_from_note = function ()
   return t
 end
 
--- TODO
+-- TODO Make this sync everything bidirectionally?
+-- Maybe make a separate function for that
 actions.sync_links = function ()
   local c_note = nd.box:by_filename(vim.fn.expand('%:t')):sync()
 
@@ -111,6 +112,7 @@ actions.sync_links = function ()
     local target_note = nd.box:by_filename(l.target):sync()
     if not target_note:has_link(c_note) then
       target_note:add_link(Link:from_text(c_note.link))
+      -- TODO Do this only once
       target_note:flush_to_file()
     end
   end

@@ -20,20 +20,27 @@ end
 
 function Note:add_link(link) table.insert(self.links, link) end
 
--- TODO dingon
+-- TODO Split this up, flushing should be more than links only but the only usecase for now
 function Note:flush_to_file()
   local handle = assert(io.open(self.path, 'r'))
   local text = handle:read "*a"; handle:close()
   local header = string.match(text, nd.note_opts.header_pattern)
 
-  print('something to write the object back to the file.')
-  print('possibly construct a new header and write that')
-  print('but that would overwrite anything customized in there')
-  print('possibly search for known elements like title: and only replace those')
-  print('but only if found...')
-  print(require('nd/json').encode(self.links))
+  local linksection = header:match("(links:.*):?")
+  local newlinksection = linksection
+  local newlinks = {}
+  for _, l in ipairs(self.links) do
+    if not linksection:find(l.text, 1, true) then
+      table.insert(newlinks, l)
+    end
+  end
+  for _, l in ipairs(newlinks) do
+    newlinksection = newlinksection .. "\t- " .. l.text
+  end
 
-  print(header:match("(links:.*):?"))
+  local write_handle = assert(io.open(self.path, 'w'))
+  write_handle:write(text:gsub(linksection:gsub("([^%w])", "%%%1"):sub(1, -3), newlinksection):sub(1, -2))
+  write_handle:close()
 end
 
 function Note:has_link(note)
