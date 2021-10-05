@@ -12,11 +12,28 @@ Note = {
 
 function Note:sync()
   local newnote = Note:from_path(self.path)
-  newnote:parse_links()
 
   nd.box.notes[self.title] = newnote
 
   return newnote
+end
+
+function Note:add_link(link) table.insert(self.links, link) end
+
+-- TODO dingon
+function Note:flush_to_file()
+  local handle = assert(io.open(self.path, 'r'))
+  local text = handle:read "*a"; handle:close()
+  local header = string.match(text, nd.note_opts.header_pattern)
+
+  print('something to write the object back to the file.')
+  print('possibly construct a new header and write that')
+  print('but that would overwrite anything customized in there')
+  print('possibly search for known elements like title: and only replace those')
+  print('but only if found...')
+  print(require('nd/json').encode(self.links))
+
+  print(header:match("(links:.*):?"))
 end
 
 function Note:has_link(note)
@@ -64,7 +81,7 @@ function Note:from_path(path)
     return t
   end
 
-  return self:new({
+  local newnote = self:new({
     title = string.match(header, nd.note_opts.title_pattern),
     date = string.match(header, nd.note_opts.date_pattern),
     tags = tags_from_header(),
@@ -72,4 +89,6 @@ function Note:from_path(path)
     link = "[["..string.match(path, "[/%g+]+/(%g+)$").."]]",
     path = path,
   })
+  newnote:parse_links()
+  return newnote
 end

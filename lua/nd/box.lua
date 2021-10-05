@@ -22,10 +22,6 @@ function Box:gather_async ()
       Box.notes[newnote.title] = newnote
     end
 
-    for _, n in pairs(Box.notes) do
-      n:parse_links()
-    end
-
     self.gathering = false
   end)
 

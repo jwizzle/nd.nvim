@@ -108,11 +108,10 @@ actions.sync_links = function ()
   local c_note = nd.box:by_filename(vim.fn.expand('%:t')):sync()
 
   for _, l in ipairs(c_note.links) do
-    local target_note = nd.box:by_filename(l.target)
-    if target_note:has_link(c_note) then
-      print('ja!')
-    else
-      print('nee!')
+    local target_note = nd.box:by_filename(l.target):sync()
+    if not target_note:has_link(c_note) then
+      target_note:add_link(Link:from_text(c_note.link))
+      target_note:flush_to_file()
     end
   end
 end
