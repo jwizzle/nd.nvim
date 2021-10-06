@@ -16,16 +16,18 @@ function Box:gather_async ()
   local gather = async(function ()
     await(async_lib.scheduler())
     local output = utils.os_capture('find '..nd.dir.." -type f -not -path '*/\\.git/*'")
+    local corrupt_notes = ''
 
     for filename in string.gmatch(output, "/%g+" .. nd.suffix) do
       local success, newnote = pcall(Note.from_path, Note, filename)
       if success then
         Box.notes[newnote.title] = newnote
       else
-        print(newnote)
+        corrupt_notes = corrupt_notes .. newnote .. "\n"
       end
     end
 
+    if corrupt_notes ~= '' then print(corrupt_notes) end
     self.gathering = false
   end)
 
