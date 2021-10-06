@@ -18,8 +18,12 @@ function Box:gather_async ()
     local output = utils.os_capture('find '..nd.dir.." -type f -not -path '*/\\.git/*'")
 
     for filename in string.gmatch(output, "/%g+" .. nd.suffix) do
-      local newnote = Note:from_path(filename)
-      Box.notes[newnote.title] = newnote
+      local success, newnote = pcall(Note.from_path, Note, filename)
+      if success then
+        Box.notes[newnote.title] = newnote
+      else
+        print(newnote)
+      end
     end
 
     self.gathering = false

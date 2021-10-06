@@ -108,6 +108,7 @@ function Note:from_path(path)
   local file = assert(io.open(path, 'r'))
   local text = file:read "*a"; file:close()
   local header = string.match(text, nd.note_opts.header_pattern)
+  if not header then return error('Unable to parse header for' .. path) end
   local tags_from_header = function()
     local t = {}
     for i in string.gmatch(header, nd.note_opts.tag_pattern) do
