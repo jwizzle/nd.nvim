@@ -8,6 +8,7 @@ Note = {
   links = {},
   path = '',
   link = '',
+  sections = {}
 }
 
 function Note:sync()
@@ -20,16 +21,13 @@ end
 
 function Note:add_link(link) table.insert(self.links, link) end
 
--- TODO Split this up, flushing should be more than links only but the only usecase for now
--- Maybe something like section regexes for headers. Making a header { section: text } kind of structure
--- an integral part of notes.
--- Can probably wait until this function is touched again.
 function Note:flush_to_file()
   local handle = assert(io.open(self.path, 'r'))
   local text = handle:read "*a"; handle:close()
-  local header = string.match(text, nd.note_opts.header_pattern)
 
-  local linksection = header:match("(links:.*):?")
+  -- TODO This should be done more generic.
+  -- So different sections can be flushed at once
+  local linksection = self.sections['links']
   local newlinksection = linksection
   local newlinks = {}
   for _, l in ipairs(self.links) do
@@ -57,13 +55,18 @@ function Note:has_link(note)
   return b
 end
 
--- TODO test this with different header set-ups. It's only tested on my specific headers now.
+-- TODO This currently only detects links with complete filenames, not with titles
 function Note:sync_links()
   local output = ''
   self:sync()
 
   local function process_links(l)
-    local target_note = nd.box:by_filename(l.target):sync()
+    local notestatus, target_note = pcall(nd.box.by_filename, nd.box, l.target)
+    if notestatus and next(target_note) then
+      target_note:sync()
+    else
+      error("File behind link not found: " .. l.text)
+    end
     local changes = false
 
     if not target_note:has_link(self) then
@@ -72,7 +75,10 @@ function Note:sync_links()
     end
 
     if changes then
-      target_note:flush_to_file()
+      local status, message = pcall(Note.flush_to_file, target_note)
+      if not status then
+        error("Error flushing to file: " .. message)
+      end
     end
 
     return changes
@@ -82,17 +88,12 @@ function Note:sync_links()
     local success, changes = pcall(process_links, l)
     if success and changes then
       output = output .. "Wrote to " .. l.target
+    elseif not success then
+      output = output .. "Error processling links for " .. l.target .. ": " .. changes
     end
   end
 
   return output
-end
-
--- TODO Why does this exist? outside of note creation?
-function Note:parse_links()
-  for i, l in ipairs(self.links) do
-    self.links[i] = Link:from_text(l)
-  end
 end
 
 function Note:new (opts)
@@ -109,6 +110,7 @@ function Note:from_path(path)
   local text = file:read "*a"; file:close()
   local header = string.match(text, nd.note_opts.header_pattern)
   if not header then return error('Unable to parse header for' .. path) end
+
   local tags_from_header = function()
     local t = {}
     for i in string.gmatch(header, nd.note_opts.tag_pattern) do
@@ -119,8 +121,29 @@ function Note:from_path(path)
   local links_from_header = function()
     local t = {}
     for link in string.gmatch(header, nd.note_opts.link_pattern) do
-      table.insert(t, link)
+      table.insert(t, Link:from_text(link))
     end
+    return t
+  end
+  -- TODO This might be implemented in more places
+  local parse_sections = function()
+    local t = {}
+
+    for section_title in header:gmatch("(%w+:\n)") do
+      local section = section_title
+      local continuation = header:match(section_title .. "(.*)")
+
+      for line in continuation:gmatch("([^\n]*\n?)") do
+        if line:match("%w+:\n") then
+          break
+        end
+        section = section .. line
+      end
+
+      t[section_title:match("%w+"):lower()] = section
+    end
+
+    -- print(require('nd/json').encode(t))
     return t
   end
 
@@ -131,7 +154,7 @@ function Note:from_path(path)
     links = links_from_header(),
     link = "[["..string.match(path, "[/%g+]+/(%g+)$").."]]",
     path = path,
+    sections = parse_sections(),
   })
-  newnote:parse_links()
   return newnote
 end
