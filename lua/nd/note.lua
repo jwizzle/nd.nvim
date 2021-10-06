@@ -55,7 +55,6 @@ function Note:has_link(note)
   return b
 end
 
--- TODO This currently only detects links with complete filenames, not with titles
 function Note:sync_links()
   local output = ''
   self:sync()
@@ -89,7 +88,7 @@ function Note:sync_links()
     if success and changes then
       output = output .. "Wrote to " .. l.target
     elseif not success then
-      output = output .. "Error processling links for " .. l.target .. ": " .. changes
+      output = output .. "Error processling links for " .. l.text .. ": " .. changes
     end
   end
 
@@ -143,7 +142,6 @@ function Note:from_path(path)
       t[section_title:match("%w+"):lower()] = section
     end
 
-    -- print(require('nd/json').encode(t))
     return t
   end
 

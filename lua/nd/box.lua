@@ -27,6 +27,10 @@ function Box:gather_async ()
       end
     end
 
+    for _, note in pairs(Box.notes) do
+      note:sync()
+    end
+
     if corrupt_notes ~= '' then print(corrupt_notes) end
     self.gathering = false
   end)

@@ -110,6 +110,7 @@ actions.sync_links = function ()
   print(nd.box:by_filename(vim.fn.expand('%:t')):sync_links())
 end
 
+-- TODO This seems to behave weird with syncing
 actions.sync_all_links = function ()
   for _, n in pairs(nd.box.notes) do
     print(n:sync_links())
