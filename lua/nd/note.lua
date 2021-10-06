@@ -23,6 +23,7 @@ function Note:add_link(link) table.insert(self.links, link) end
 -- TODO Split this up, flushing should be more than links only but the only usecase for now
 -- Maybe something like section regexes for headers. Making a header { section: text } kind of structure
 -- an integral part of notes.
+-- Can probably wait until this function is touched again.
 function Note:flush_to_file()
   local handle = assert(io.open(self.path, 'r'))
   local text = handle:read "*a"; handle:close()
@@ -58,20 +59,33 @@ end
 
 -- TODO test this with different header set-ups. It's only tested on my specific headers now.
 function Note:sync_links()
+  local output = ''
   self:sync()
 
   local function process_links(l)
     local target_note = nd.box:by_filename(l.target):sync()
+    local changes = false
+
     if not target_note:has_link(self) then
       target_note:add_link(Link:from_text(self.link))
-      -- TODO Do this only once if there's multiple links
+      changes = true
+    end
+
+    if changes then
       target_note:flush_to_file()
     end
+
+    return changes
   end
 
   for _, l in ipairs(self.links) do
-    pcall(process_links, l)
+    local success, changes = pcall(process_links, l)
+    if success and changes then
+      output = output .. "Wrote to " .. l.target
+    end
   end
+
+  return output
 end
 
 -- TODO Why does this exist? outside of note creation?

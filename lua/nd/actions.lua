@@ -107,12 +107,12 @@ actions.links_from_note = function ()
 end
 
 actions.sync_links = function ()
-  nd.box:by_filename(vim.fn.expand('%:t')):sync_links()
+  print(nd.box:by_filename(vim.fn.expand('%:t')):sync_links())
 end
 
 actions.sync_all_links = function ()
   for _, n in pairs(nd.box.notes) do
-    n:sync_links()
+    print(n:sync_links())
   end
 end
 

@@ -126,6 +126,7 @@ links:
 ## Todo
 
 * Auto-creation of backlinks
+* Actually document code
 * More telescope shortcuts
 * Actions to fill the header of current file with links/tags from zettel contents
 * Some caching mechanism/optimizations/prefetching
