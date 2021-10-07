@@ -7,8 +7,8 @@ Mainly by providing [telescope.nvim](https://github.com/nvim-telescope/telescope
 
 It works by gathering the notes from your configured zettelkasten directory, and parsing data from the headers of your zettels. Which means there are some restrictions on what these notes are supposed to look like before all goodies are available/work correctly. I've written this with configurability and compatibility in mind as much as possible.
 
-The state of this project is currently very new. It works great on my machine, and that's as much as it's been tested. This is the first neovim plug-in I've made so far, and the first lua project. So any and all feedback is welcome, all expectations are better dropped.
-Most of the functionality I was looking for myself has been implemented, the rest is currently in the todo section. Reported issues will be looked at whenever I feel like it. Feature requests will be considered if they're in line with something I want, merge requests are better.
+The state of this project is currently very new. It works great on my machine, and that's as much as it's been tested. This is the first neovim plug-in I've made so far, and the first lua project. So any and all feedback is welcome.
+Most of the functionality I was looking for myself has been implemented, the way it is used probably won't change in the near future but code is still being rewritten as I go and learn lua. Some new functionality might be added. Reported issues will be looked at whenever I feel like it. Feature requests will be considered if they're in line with something I want, merge requests are better.
 
 ### Available goodies
 
@@ -19,6 +19,7 @@ Most of the functionality I was looking for myself has been implemented, the res
 * Create new zettels from a template with placeholders for title and date
 * Pick a note from telescope, insert a link to it under cursor
 * Jump to links under your cursor
+* Keep links in sync between zettels
 * Should work out of the box, while being customizable enough to work around differences in zettelkasten set-ups
   * Most heavy-lifting is done by configurable lua pattern strings
 
@@ -44,14 +45,26 @@ require('nd').setup()
 ### Shortcut example
 
 ```lua
+-- Create a new zettel
 vim.api.nvim_set_keymap('n', '<leader>zn', "<cmd>lua require('nd').actions.new()<CR>", {})
+-- Sync object in memory with file status, probably never needed
 vim.api.nvim_set_keymap('n', '<leader>zg', "<cmd>lua require('nd').actions.gather()<CR>", {})
+-- Use telescope to find notes by path
 vim.api.nvim_set_keymap('n', '<leader>zf', "<cmd>lua require('nd/telescope').find_notes()<CR>", {})
+-- Use telescope to browse links to this zettel
 vim.api.nvim_set_keymap('n', '<leader>zlt', "<cmd>lua require('nd/telescope').find_links_to()<CR>", {})
+-- Use telescope to browse links from this note
 vim.api.nvim_set_keymap('n', '<leader>zlf', "<cmd>lua require('nd/telescope').find_links_from()<CR>", {})
+-- Use telescope to pick a link to insert under cursor
 vim.api.nvim_set_keymap('n', '<leader>zll', "<cmd>lua require('nd/telescope').insert_link()<CR>", {})
+-- Use telescope to explore tags
 vim.api.nvim_set_keymap('n', '<leader>zt', "<cmd>lua require('nd/telescope').find_tags()<CR>", {})
+-- Use telescope to live-grep in zettel folder
 vim.api.nvim_set_keymap('n', '<leader>zr', '<cmd>lua require("nd/telescope").live_grep()<CR>', {})
+-- Make sure all links in the current note also link back to this one -- Requires a links: section in your headers. Use with caution if your header setup differs.
+vim.api.nvim_set_keymap('n', '<leader>zls', "<cmd>lua require('nd').actions.sync_links()<CR>", {}) -- Make 
+-- Make sure all links in all notes link back to each other -- Requires a links: section in your headers. Use with caution if your header setup differs.
+vim.api.nvim_set_keymap('n', '<leader>zlS', "<cmd>lua require('nd').actions.sync_all_links()<CR>", {})
 ```
 
 ### About zettels
@@ -125,7 +138,6 @@ links:
 
 ## Todo
 
-* Auto-creation of backlinks
 * Actually document code
 * More telescope shortcuts
 * Actions to fill the header of current file with links/tags from zettel contents
