@@ -124,7 +124,7 @@ function Note:from_path(path)
     end
     return t
   end
-  -- TODO A section should be a separate object.
+  -- TODO A section should be a separate object. Maybe a header too.
   local parse_sections = function()
     local t = {}
 

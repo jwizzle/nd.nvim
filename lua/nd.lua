@@ -5,9 +5,9 @@ local nd = {
   prefix = "%H%M%S_%Y%m%d", -- File/zettel prefix, takes datestrings
   suffix = ".md", -- File/zettel suffix
   disable_shortcuts = false, -- Disable all shortcuts
-  shortcuts = { -- Set individual shortcuts to false to disable
+  shortcuts = { -- Set individual shortcuts to false to disable, these are applied in a zettelkast buffer only
     linkjump = '<C-]>',
-    sync_links = 'zll'
+    sync_links = 'zll' -- TODO More of this
   },
   note_opts = { -- How to interpret your zettels/headers
     cachepath = '/tmp/zetteltmp',

@@ -42,7 +42,10 @@ require('nd').setup()
 
 ## Usage
 
-### Shortcut example
+See configuration for default shortcuts. Those will be local to files in your zettelkasten directory only and will not influence other buffers.
+You might want to run certain actions like finding zettels or creating new ones outside of that directory too. See the custom shortcut example below.
+
+### Custom shortcut example
 
 ```lua
 -- Create a new zettel
@@ -104,7 +107,7 @@ require('nd').setup({
   prefix = "%H%M%S_%Y%m%d", -- File/zettel prefix, takes datestrings
   suffix = ".md", -- File/zettel suffix
   disable_shortcuts = false, -- Disable all shortcuts
-  shortcuts = { -- Set individual shortcuts to false to disable
+  shortcuts = { -- Set individual shortcuts to false to disable, these are applied in a zettelkast buffer only
     linkjump = '<C-]>',
     sync_links = 'zll'
   },
@@ -139,6 +142,8 @@ links:
 ## Todo
 
 * Actually document code
+* What happens if zettel titles are double?
+* Renaming zettels
 * More telescope shortcuts
 * Actions to fill the header of current file with links/tags from zettel contents
 * Some caching mechanism/optimizations/prefetching
