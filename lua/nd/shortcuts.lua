@@ -1,4 +1,5 @@
 local nd = require('nd')
+local utils = require("nd/utils")
 local sc = {}
 
 sc.map = function(shortcut, exec)
@@ -13,12 +14,15 @@ sc.setup = function (opts)
   opts = opts or {}
   for k, v in pairs(opts) do sc[k] = v end
 
-  for k, v in pairs(sc) do
+  for k, v in pairs(sc.general) do
     if v then
       local actionstring = string.format("require('nd').actions.%s()", k)
-      if not _G[actionstring] then
-        actionstring = string.format("require('nd/telescope').%s()", k)
-      end
+      sc.map(v, actionstring)
+    end
+  end
+  for k, v in pairs(sc.telescope) do
+    if v then
+      local actionstring = string.format("require('nd/telescope').%s()", k)
       sc.map(v, actionstring)
     end
   end
