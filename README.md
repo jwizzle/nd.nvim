@@ -45,6 +45,8 @@ require('nd').setup()
 See configuration for default shortcuts. Those will be local to files in your zettelkasten directory only and will not influence other buffers.
 You might want to run certain actions like finding zettels or creating new ones outside of that directory too. See the custom shortcut example below.
 
+I personally have set the find_notes action in my init.lua to access my notes from anywhere. From that point I use the built-in commands to navigate further. And kept the new command separate to be able to start a new idea from anywhere.
+
 ### Custom shortcut example
 
 ```lua
@@ -108,8 +110,17 @@ require('nd').setup({
   suffix = ".md", -- File/zettel suffix
   disable_shortcuts = false, -- Disable all shortcuts
   shortcuts = { -- Set individual shortcuts to false to disable, these are applied in a zettelkast buffer only
-    linkjump = '<C-]>',
-    sync_links = 'zll'
+    jump = '<C-]>',
+    new = 'zn',
+    gather = 'zG',
+    find_notes = 'zf',
+    find_links_to = 'zlt',
+    find_links_from = 'zlf',
+    insert_link = 'zll',
+    sync_links = 'zls',
+    sync_all_links = 'zlS',
+    find_tags = 'zt',
+    live_grep = 'zg',
   },
   note_opts = { -- How to interpret your zettels/headers
     cachepath = '/tmp/zetteltmp',

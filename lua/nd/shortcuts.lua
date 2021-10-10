@@ -13,8 +13,15 @@ sc.setup = function (opts)
   opts = opts or {}
   for k, v in pairs(opts) do sc[k] = v end
 
-  if sc.linkjump then sc.map(sc.linkjump, "require('nd').actions.jump()") end
-  if sc.sync_links then sc.map(sc.sync_links, "require('nd').actions.sync_links()") end
+  for k, v in pairs(sc) do
+    if v then
+      local actionstring = string.format("require('nd').actions.%s()", k)
+      if not _G[actionstring] then
+        actionstring = string.format("require('nd/telescope').%s()", k)
+      end
+      sc.map(v, actionstring)
+    end
+  end
 end
 
 return sc
