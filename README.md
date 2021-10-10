@@ -110,17 +110,21 @@ require('nd').setup({
   suffix = ".md", -- File/zettel suffix
   disable_shortcuts = false, -- Disable all shortcuts
   shortcuts = { -- Set individual shortcuts to false to disable, these are applied in a zettelkast buffer only
-    jump = '<C-]>',
-    new = 'zn',
-    gather = 'zG',
-    find_notes = 'zf',
-    find_links_to = 'zlt',
-    find_links_from = 'zlf',
-    insert_link = 'zll',
-    sync_links = 'zls',
-    sync_all_links = 'zlS',
-    find_tags = 'zt',
-    live_grep = 'zg',
+    general = {
+      jump = '<C-]>',
+      new = 'zn',
+      gather = 'zG',
+      sync_links = 'zls',
+      sync_all_links = 'zlS',
+    },
+    telescope = {
+      find_notes = 'zf',
+      find_links_to = 'zlt',
+      find_links_from = 'zlf',
+      insert_link = 'zll',
+      find_tags = 'zt',
+      live_grep = 'zg',
+    },
   },
   note_opts = { -- How to interpret your zettels/headers
     cachepath = '/tmp/zetteltmp',
