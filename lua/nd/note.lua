@@ -1,5 +1,6 @@
 local nd = require('nd')
 require('nd/link')
+require('nd/section')
 
 Note = {
   tags = {},
@@ -27,7 +28,7 @@ function Note:flush_to_file()
 
   -- TODO This should be done more generic.
   -- So different sections can be flushed at once
-  local linksection = self.sections['links']
+  local linksection = self.sections.links.content
   local newlinksection = linksection
   local newlinks = {}
   for _, l in ipairs(self.links) do
@@ -124,26 +125,6 @@ function Note:from_path(path)
     end
     return t
   end
-  -- TODO A section should be a separate object. Maybe a header too.
-  local parse_sections = function()
-    local t = {}
-
-    for section_title in header:gmatch("(%w+:\n)") do
-      local section = section_title
-      local continuation = header:match(section_title .. "(.*)")
-
-      for line in continuation:gmatch("([^\n]*\n?)") do
-        if line:match("%w+:\n") then
-          break
-        end
-        section = section .. line
-      end
-
-      t[section_title:match("%w+"):lower()] = section
-    end
-
-    return t
-  end
 
   local newnote = self:new({
     title = string.match(header, nd.note_opts.title_pattern),
@@ -152,7 +133,8 @@ function Note:from_path(path)
     links = links_from_header(),
     link = "[["..string.match(path, "[/%g+]+/(%g+)$").."]]",
     path = path,
-    sections = parse_sections(),
+    -- Make this a pcall
+    sections = Section:all_from_header(header),
   })
   return newnote
 end

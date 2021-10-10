@@ -8,16 +8,6 @@ Section = {
   content = '',
 }
 
-function Section:sync()
-  local newnote = Section:from_path(self.path)
-
-  nd.box.notes[self.title] = newnote
-
-  return newnote
-end
-
-function Section:add_link(link) table.insert(self.links, link) end
-
 function Section:new (opts)
   opts = opts or {}
 
@@ -27,11 +17,32 @@ function Section:new (opts)
   return opts
 end
 
-function Section:from_header(header)
-  local newsection = self:new({
-    title = string.match(header, nd.note_opts.title_pattern),
-    text = '',
-    content = '',
+function Section:from_header(title, header)
+  local section = title
+  local content = ''
+  local continuation = header:match(title .. "(.*)")
+
+  for line in continuation:gmatch("([^\n]*\n?)") do
+    if line:match("%w+:\n") then
+      break
+    end
+    section = section .. line
+    content = content .. line
+  end
+
+  return self:new({
+    title = title,
+    text = section,
+    content = content,
   })
-  return newsection
+end
+
+function Section:all_from_header(header)
+  local t = {}
+
+  for section_title in header:gmatch("(%w+:\n)") do
+    t[section_title:match("%w+"):lower()] = Section:from_header(section_title, header)
+  end
+
+  return t
 end
