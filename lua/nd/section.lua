@@ -1,5 +1,3 @@
--- TODO Finish
-local nd = require('nd')
 require('nd/link')
 
 Section = {
