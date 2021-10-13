@@ -26,23 +26,40 @@ function Note:flush_to_file()
   local handle = assert(io.open(self.path, 'r'))
   local text = handle:read "*a"; handle:close()
 
-  -- TODO This should be done more generic.
-  -- So different sections can be flushed at once
-  local linksection = self.sections.links.content
-  local newlinksection = linksection
-  local newlinks = {}
-  for _, l in ipairs(self.links) do
-    if not linksection:find(l.text, 1, true) then
-      table.insert(newlinks, l)
+  local process_changes = function(obj_in_mem, file_content)
+    local new_rows = {}
+
+    for _, l in ipairs(obj_in_mem) do
+      local obj_text = l.text or l
+      if not file_content:find(obj_text, 1, true) then
+        table.insert(new_rows, l)
+      end
     end
+
+    return new_rows
   end
-  for _, l in ipairs(newlinks) do
-    newlinksection = newlinksection .. "\t- " .. l.text
+  local write_changes = function(updated_mem_object, current_content)
+    local newcontent = current_content
+
+    for _, l in ipairs(updated_mem_object) do
+      newcontent = newcontent .. "\t- " .. l.text
+    end
+    local write_handle = assert(io.open(self.path, 'w'))
+    write_handle:write(text:gsub(current_content:gsub("([^%w])", "%%%1"):sub(1, -3), newcontent):sub(1, -2))
+    write_handle:close()
   end
 
-  local write_handle = assert(io.open(self.path, 'w'))
-  write_handle:write(text:gsub(linksection:gsub("([^%w])", "%%%1"):sub(1, -3), newlinksection):sub(1, -2))
-  write_handle:close()
+  for title, section in pairs(self.sections) do
+    if self[title] == nil then goto continue end
+
+    local content = section.content
+    local newlinks = process_changes(self[title], content)
+
+    if next(newlinks) == nil then goto continue end
+
+    write_changes(newlinks, content)
+    ::continue::
+  end
 end
 
 function Note:has_link(note)
