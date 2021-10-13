@@ -127,6 +127,7 @@ function Note:from_path(path)
   local text = file:read "*a"; file:close()
   local header = string.match(text, nd.note_opts.header_pattern)
   if not header then return error('Unable to parse header for' .. path) end
+  local _, sections = pcall(Section.all_from_header, Section, header)
 
   local tags_from_header = function()
     local t = {}
@@ -150,8 +151,7 @@ function Note:from_path(path)
     links = links_from_header(),
     link = "[["..string.match(path, "[/%g+]+/(%g+)$").."]]",
     path = path,
-    -- Make this a pcall
-    sections = Section:all_from_header(header),
+    sections = sections,
   })
   return newnote
 end
