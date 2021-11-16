@@ -21,6 +21,11 @@ function Box:gather_async ()
     for filename in string.gmatch(output, "/%g+" .. nd.suffix) do
       local success, newnote = pcall(Note.from_path, Note, filename)
       if success then
+        if Box.notes[newnote.title] then
+          if Box.notes[newnote.title].path ~= newnote.path then
+            print(newnote.title .. ' is declared multiple times.')
+          end
+        end
         Box.notes[newnote.title] = newnote
       else
         corrupt_notes = corrupt_notes .. newnote .. "\n"

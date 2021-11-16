@@ -157,7 +157,6 @@ links:
 ## Todo
 
 * Actually document code
-* What happens if zettel titles are double?
 * Renaming zettels
 * More telescope shortcuts
 * Actions to fill the header of current file with links/tags from zettel contents
