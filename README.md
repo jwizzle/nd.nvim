@@ -156,6 +156,8 @@ links:
 
 ## Todo
 
+* Think about letting the sync functions also search for links in the zettels texts and add them to the header
+  * Probably want this behind a toggle
 * Actually document code
 * Renaming zettels
 * More telescope shortcuts

@@ -42,7 +42,8 @@ function Note:flush_to_file()
     local newcontent = current_content
 
     for _, l in ipairs(updated_mem_object) do
-      newcontent = newcontent .. "\t- " .. l.text
+      local target_note = nd.box:by_filename(l.target)
+      newcontent = newcontent .. "\t- " .. target_note.title .. ": " .. l.text
     end
     local write_handle = assert(io.open(self.path, 'w'))
     write_handle:write(text:gsub(current_content:gsub("([^%w])", "%%%1"):sub(1, -3), newcontent):sub(1, -2))
