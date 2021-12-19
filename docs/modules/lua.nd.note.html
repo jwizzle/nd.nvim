@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>nd.nvim</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/lua.nd.html">lua.nd</a></li>
+  <li><a href="../modules/lua.nd.actions.html">lua.nd.actions</a></li>
+  <li><a href="../modules/lua.nd.box.html">lua.nd.box</a></li>
+  <li><a href="../modules/lua.nd.json.html">lua.nd.json</a></li>
+  <li><a href="../modules/lua.nd.link.html">lua.nd.link</a></li>
+  <li><strong>lua.nd.note</strong></li>
+  <li><a href="../modules/lua.nd.section.html">lua.nd.section</a></li>
+  <li><a href="../modules/lua.nd.shortcuts.html">lua.nd.shortcuts</a></li>
+  <li><a href="../modules/lua.nd.telescope.actions.html">lua.nd.telescope.actions</a></li>
+  <li><a href="../modules/lua.nd.telescope.html">lua.nd.telescope</a></li>
+  <li><a href="../modules/lua.nd.telescope.pickers.html">lua.nd.telescope.pickers</a></li>
+  <li><a href="../modules/lua.nd.utils.html">lua.nd.utils</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>lua.nd.note</code></h1>
+<p>A note object, representing a file on your system in memory.</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Note:sync">Note:sync ()</a></td>
+	<td class="summary">Sync the note.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Note:add_link">Note:add_link (link)</a></td>
+	<td class="summary">Add a link to the note.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Note:flush_to_file">Note:flush_to_file ()</a></td>
+	<td class="summary">Flush the note to it's file.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Note:has_link">Note:has_link (note)</a></td>
+	<td class="summary">Check if the current note has a link to another one.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Note:sync_links">Note:sync_links ()</a></td>
+	<td class="summary">Sync links between notes.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Note:new">Note:new (opts)</a></td>
+	<td class="summary">Instantiate a new note.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Note:from_path">Note:from_path (path)</a></td>
+	<td class="summary">Read a file, and create a note in memory.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Note:sync"></a>
+    <strong>Note:sync ()</strong>
+    </dt>
+    <dd>
+    Sync the note.
+ Creates a new note from it's current path and replaces the object.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Note: The new note
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Note:add_link"></a>
+    <strong>Note:add_link (link)</strong>
+    </dt>
+    <dd>
+    Add a link to the note.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">link</span>
+         Link: A link object
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Note:flush_to_file"></a>
+    <strong>Note:flush_to_file ()</strong>
+    </dt>
+    <dd>
+    Flush the note to it's file.
+ Only operates on the header.
+ Might make some assumptions about how you want your notes to look.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Note:has_link"></a>
+    <strong>Note:has_link (note)</strong>
+    </dt>
+    <dd>
+    Check if the current note has a link to another one.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">note</span>
+         Note: The note to check
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        bool: Do we have a link to the other note?
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Note:sync_links"></a>
+    <strong>Note:sync_links ()</strong>
+    </dt>
+    <dd>
+    Sync links between notes.
+ Checks if all notes linked from this one have a backlink.
+ If not create them and write the file.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        string: Output to show the user
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Note:new"></a>
+    <strong>Note:new (opts)</strong>
+    </dt>
+    <dd>
+    Instantiate a new note.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">opts</span>
+         table: A table of options
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        table: The new Note object
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Note:from_path"></a>
+    <strong>Note:from_path (path)</strong>
+    </dt>
+    <dd>
+    Read a file, and create a note in memory.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">path</span>
+         string: The path to the file
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Note: The new note object
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2021-12-19 19:09:44 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
