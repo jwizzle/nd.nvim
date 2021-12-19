@@ -1,3 +1,7 @@
+--- Notitiedoos, a zettelkasten implementation in Neovim.
+-- This is quite opinionated about what headers of zettels should look like for optimal performance.
+-- But there should be some useful things even when not adhering to my set-up.
+-- The aim is to make things more flexible as soon as more details about usage in general have been worked out.
 local nd = {
   dir = '~/zettelkasten', -- Your zettelkast directory
   open_new = true, -- Instantly open a newly created zettel
@@ -50,6 +54,8 @@ links:
 ]], -- Template for new zettels, can interpolate date and title
 }
 
+--- Load patterns from the given opts map
+-- These are used to find headers, tags, etc. in a notes header
 nd.load_patterns = function ()
   for k, v in pairs(nd.note_opts.pattern_sets[nd.note_opts.pattern_set]) do
     if not nd.note_opts[k] then
@@ -58,6 +64,11 @@ nd.load_patterns = function ()
   end
 end
 
+--- Setup the notitiedoos module
+-- Load patterns, merge opts, set up a box for notes, etc.
+-- @param opts table: Table of options to parse
+-- @return None
+-- @see Box and action objects
 nd.setup = function (opts)
   -- Merge opts
   opts = opts or {}
@@ -82,7 +93,7 @@ nd.setup = function (opts)
   -- Initialize shortcuts
   if not nd.disable_shortcuts then require('nd/shortcuts').setup(nd.shortcuts) end
 
-  -- print(require('nd/json').encode(nd.actions.notes_with_tag('awk')))
+  -- print(require('nd/json').encode(nd.box.notes))
 end
 
 return nd

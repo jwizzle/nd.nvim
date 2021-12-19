@@ -1,3 +1,5 @@
+--- The Box of notes.
+-- Object is used to interact with, find and gather notes.
 require('nd/note')
 
 local async_lib = require "plenary.async_lib"
@@ -12,6 +14,8 @@ Box = {
   gathering = false,
 }
 
+--- Gather all notes in the background.
+-- Fills the box with notes from the given directory.
 function Box:gather_async ()
   local gather = async(function ()
     await(async_lib.scheduler())
@@ -43,6 +47,10 @@ function Box:gather_async ()
   if not self.gathering then run(gather()); self.gathering = true end
 end
 
+--- Find a note by filename.
+-- Partially matches, returns first result.
+-- @param filename string: The filename to search for
+-- @return Note: Note object found
 function Box:by_filename (filename)
   local result = {}
 
@@ -56,6 +64,10 @@ function Box:by_filename (filename)
   return result
 end
 
+--- Find a note by title.
+-- Partially matches, returns first result.
+-- @param title string: The title to search for
+-- @return Note: The first note object that's found
 function Box:by_title (title)
   local result = {}
 
@@ -69,6 +81,10 @@ function Box:by_title (title)
   return result
 end
 
+--- Instantiate the box.
+-- Also starts gathering notes asynchronously in the background
+-- @param box table: A table of options
+-- @return Box: The instantiated box
 function Box:setup (opts)
   opts = opts or {}
   for k, v in pairs(opts) do self[k] = v end
