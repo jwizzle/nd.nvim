@@ -1,3 +1,4 @@
+--- Pickers for telescope.
 local pickers = require('telescope.pickers')
 local finders = require('telescope.finders')
 local previewers = require('telescope.previewers')
@@ -7,6 +8,10 @@ local conf = require("telescope.config").values
 
 local p = {}
 
+--- Default table picker.
+-- @param title string: The title of the entry
+-- @param action string: The action to apply
+-- @param opts table: A table of options for the picker
 p.table = function (title, action, opts)
   opts = opts or {}
   local action_param = opts.action_param or {}

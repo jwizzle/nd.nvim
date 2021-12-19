@@ -1,3 +1,4 @@
+--- A note object, representing a file on your system in memory.
 local nd = require('nd')
 require('nd/link')
 require('nd/section')
@@ -12,6 +13,9 @@ Note = {
   sections = {}
 }
 
+--- Sync the note.
+-- Creates a new note from it's current path and replaces the object.
+-- @return Note: The new note
 function Note:sync()
   local newnote = Note:from_path(self.path)
 
@@ -20,8 +24,13 @@ function Note:sync()
   return newnote
 end
 
+--- Add a link to the note.
+-- @param link Link: A link object
 function Note:add_link(link) table.insert(self.links, link) end
 
+--- Flush the note to it's file.
+-- Only operates on the header.
+-- Might make some assumptions about how you want your notes to look.
 function Note:flush_to_file()
   local handle = assert(io.open(self.path, 'r'))
   local text = handle:read "*a"; handle:close()
@@ -63,6 +72,9 @@ function Note:flush_to_file()
   end
 end
 
+--- Check if the current note has a link to another one.
+-- @param note Note: The note to check
+-- @return bool: Do we have a link to the other note?
 function Note:has_link(note)
   local b = false
   for _, l in pairs(self.links) do
@@ -74,6 +86,10 @@ function Note:has_link(note)
   return b
 end
 
+--- Sync links between notes.
+-- Checks if all notes linked from this one have a backlink.
+-- If not create them and write the file.
+-- @return string: Output to show the user
 function Note:sync_links()
   local output = ''
   self:sync()
@@ -114,6 +130,9 @@ function Note:sync_links()
   return output
 end
 
+--- Instantiate a new note.
+-- @param opts table: A table of options
+-- @return table: The new Note object
 function Note:new (opts)
   opts = opts or {}
 
@@ -123,6 +142,9 @@ function Note:new (opts)
   return opts
 end
 
+--- Read a file, and create a note in memory.
+-- @param path string: The path to the file
+-- @return Note: The new note object
 function Note:from_path(path)
   local file = assert(io.open(path, 'r'))
   local text = file:read "*a"; file:close()

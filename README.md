@@ -156,7 +156,9 @@ links:
 
 ## Todo
 
+* Also load links from content, if they exist only, try parsing everything between [[]]
 * Actually document code
+* Should this be more decoupled from telescope itself?
 * Renaming zettels
 * More telescope shortcuts
 * Actions to fill the header of current file with links/tags from zettel contents

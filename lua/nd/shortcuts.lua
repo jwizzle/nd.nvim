@@ -1,7 +1,11 @@
+--- Set up shortcuts
+-- Only enabled when working on a zettel/note
 local nd = require('nd')
-local utils = require("nd/utils")
 local sc = {}
 
+--- Map a shortcut to a function.
+-- @param shortcut string: The shortcut to set up, vim notation
+-- @param exec string: Lua code to execute
 sc.map = function(shortcut, exec)
   local autocmd_pattern = nd.dir..'/*'..nd.suffix
 
@@ -10,6 +14,8 @@ sc.map = function(shortcut, exec)
     ]], autocmd_pattern, shortcut, exec))
 end
 
+--- Set up shortcuts from given options.
+-- @param opts table: Table of options/shortcuts
 sc.setup = function (opts)
   opts = opts or {}
   for k, v in pairs(opts) do sc[k] = v end
