@@ -68,7 +68,6 @@ end
 -- Load patterns, merge opts, set up a box for notes, etc.
 -- @param opts table: Table of options to parse
 -- @return None
--- @see Box and action objects
 nd.setup = function (opts)
   -- Merge opts
   opts = opts or {}

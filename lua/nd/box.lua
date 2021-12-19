@@ -83,7 +83,7 @@ end
 
 --- Instantiate the box.
 -- Also starts gathering notes asynchronously in the background
--- @param box table: A table of options
+-- @param opts table: A table of options
 -- @return Box: The instantiated box
 function Box:setup (opts)
   opts = opts or {}
