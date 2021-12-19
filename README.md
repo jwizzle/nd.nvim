@@ -157,11 +157,9 @@ links:
 ## Todo
 
 * Also load links from content, if they exist only, try parsing everything between [[]]
-* Actually document code
-* Should this be more decoupled from telescope itself?
+* Should the notefinding/box functionality be more decoupled from usage in nvim?
 * Renaming zettels
 * More telescope shortcuts
 * Actions to fill the header of current file with links/tags from zettel contents
 * Some caching mechanism/optimizations/prefetching
 * Telescope alternatives/native tools
-
