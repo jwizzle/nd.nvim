@@ -6,7 +6,7 @@ local nd = require("nd")
 local a = {}
 
 --- Insert a link under cursor.
--- @param prompt_bufnr: Buffer number
+-- @param prompt_bufnr int: Buffer number
 a.insert_link = function (prompt_bufnr)
   local selection = action_state.get_selected_entry()
   actions.close(prompt_bufnr)
@@ -17,7 +17,7 @@ a.insert_link = function (prompt_bufnr)
 end
 
 --- Pick a tag to find notes for.
--- @param prompt_bufnr: Buffer number
+-- @param prompt_bufnr int: Buffer number
 a.open_tag = function (prompt_bufnr)
   local selection = action_state.get_selected_entry()
   actions.close(prompt_bufnr)
@@ -27,7 +27,7 @@ a.open_tag = function (prompt_bufnr)
 end
 
 --- Open a selected note
--- @param prompt_bufnr: Buffer number
+-- @param prompt_bufnr int: Buffer number
 a.open_note = function (prompt_bufnr)
   local selection = action_state.get_selected_entry()
   local filepath = selection.value
