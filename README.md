@@ -10,6 +10,8 @@ It works by gathering the notes from your configured zettelkasten directory, and
 The state of this project is currently very new. It works great on my machine, and that's as much as it's been tested. This is the first neovim plug-in I've made so far, and the first lua project. So any and all feedback is welcome.
 Most of the functionality I was looking for myself has been implemented, the way it is used probably won't change in the near future but code is still being rewritten as I go and learn lua. Some new functionality might be added. Reported issues will be looked at whenever I feel like it. Feature requests will be considered if they're in line with something I want, merge requests are better.
 
+[Some auto-generated very limited docs.](https://jwizzle.github.io/nd.nvim/)
+
 ### Available goodies
 
 * Creates a table with information about your zettels to make navigation a breeze (asynchronously/non-blocking)
