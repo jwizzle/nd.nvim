@@ -1,6 +1,12 @@
 --- Some random utilities I needed
 local utils = {}
 
+utils.zettelgocmd = function (cmd)
+  local output = utils.os_capture("zettelgo " .. cmd)
+  local json = require('nd/json').decode(output)
+  return json
+end
+
 --- Capture os command output
 -- @param cmd string: Command to execute
 -- @param raw bool: Capture raw?

@@ -45,48 +45,17 @@ end
 
 --- List all notes.
 -- @return table: A table/list of note objects
-actions.list = function ()
-  local t = {}
-  for _, v in pairs(nd.box.notes) do
-    table.insert(t, v)
-  end
-  return t
-end
+actions.list = function () return utils.zettelgocmd('list --json') end
+
+--- List all tags
+-- @return table: A table/list of tags
+actions.tags = function () return utils.zettelgocmd('list tags --json') end
 
 --- List all notes with a specific tag.
 -- @return table: A table/list of note objects
 actions.notes_with_tag = function (tag)
-  local t = {}
-
-  for k, v in pairs(nd.box.notes) do
-    for _, ntag in ipairs(v.tags) do
-      if ntag == tag or ntag == '#'..tostring(tag) then
-        table.insert(t, nd.box.notes[k])
-        break
-      end
-    end
-  end
-
-  return t
-end
-
---- List all tags
--- @return table: A table/list of tags
-actions.tags = function ()
-  local t = {}
-  local list = {}
-
-  for _, v in pairs(nd.box.notes) do
-    for _, tag in ipairs(v.tags) do
-      t[tag] = true
-    end
-  end
-
-  for k, _ in pairs(t) do
-    table.insert(list, k)
-  end
-
-  return list
+  local filter = "'{\"tag\": \"" .. tag .. "\"}'"
+  return utils.zettelgocmd('list --json --filter ' .. filter)
 end
 
 --- List all tags in the current note.
