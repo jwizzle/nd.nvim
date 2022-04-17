@@ -5,42 +5,28 @@
 local nd = require("nd")
 local utils = require("nd/utils")
 local actions = {}
-require('nd/link')
 
 --- Jump to a link under cursor.
 -- Uses vim expansion to get the current word.
 -- Opens the target with :e $target
 actions.jump = function ()
-  local link = Link:from_text(vim.fn.expand('<cWORD>'))
-  vim.api.nvim_command(":e " .. link.target)
+  local linktext = vim.fn.expand('<cWORD>')
+  local filter = "'{\"link\": \"" .. linktext .. "\"}'"
+  local linkedjson = utils.zettelgocmd('show --json --filter ' .. filter)
+
+  vim.api.nvim_command(":e " .. linkedjson['path'])
 end
 
 --- Create a new note.
--- Asks for a title, uses the template in settings for initial content.
 actions.new = function ()
   local title = vim.fn.input('Title: ')
   if title == nil or title == '' then
     return
   end
   local filename = title:gsub(" ", "_")
-  local prefix = os.date(nd.prefix) .. '_'
-  local filepath = nd.dir .. "/" .. prefix .. filename .. nd.suffix
-
-  local file = assert(io.open(filepath, "w"))
-  file:write(utils.interp(nd.header,  {
-      date = os.date(nd.header_datestring),
-      title = title,
-    }))
-  file:close()
-  print('Created ' .. filepath)
-  nd.box:gather_async()
+  local filepath = utils.os_capture("zettelgo new " .. filename)
 
   if nd.open_new then vim.api.nvim_command(":e " .. filepath) end
-end
-
---- Force gathering of notes asynchronously.
-actions.gather = function ()
-  nd.box:gather_async()
 end
 
 --- List all notes.
@@ -85,16 +71,16 @@ actions.links_from_note = function ()
   return utils.zettelgocmd('list --json --filter ' .. filter)
 end
 
+-- TODO Go-side
 --- Sync links from the current note
-actions.sync_links = function ()
-  print(nd.box:by_filename(vim.fn.expand('%:t')):sync_links())
-end
-
---- Sync links of all notes
-actions.sync_all_links = function ()
-  for _, n in pairs(nd.box.notes) do
-    print(n:sync_links())
-  end
-end
+-- actions.sync_links = function ()
+--   print(nd.box:by_filename(vim.fn.expand('%:t')):sync_links())
+-- end
+-- --- Sync links of all notes
+-- actions.sync_all_links = function ()
+--   for _, n in pairs(nd.box.notes) do
+--     print(n:sync_links())
+--   end
+-- end
 
 return actions

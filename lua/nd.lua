@@ -79,13 +79,6 @@ nd.setup = function (opts)
     nd.dir = os.getenv("HOME") .. substr
   end
 
-  -- Merge patterns
-  nd.load_patterns()
-
-  -- Initialize notes
-  require('nd/box')
-  nd.box = Box:setup()
-
   -- Load actions
   nd.actions = require("nd/actions")
 
