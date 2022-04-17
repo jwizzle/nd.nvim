@@ -62,40 +62,27 @@ end
 -- @return table: List of tags
 actions.tags_in = function ()
   local note = vim.fn.expand('%:t')
+  local filter = "'{\"filename\": \"" .. note .. "\"}'"
 
-  return nd.box:by_filename(note).tags
+  return utils.zettelgocmd('list tags --json --filter ' .. filter)
 end
 
 --- List all links to the current open note.
--- Also syncs the notes, just to be sure.
--- @return table: List of notes
+-- @return table: A list of notes
 actions.links_to_note = function ()
-  local note = nd.box:by_filename(vim.fn.expand('%:t')):sync()
-  local file_list = {}
+  local note = vim.fn.expand('%:t')
+  local filter = "'{\"linking_to\": \"" .. note .. "\"}'"
 
-  for _, t in pairs(nd.box.notes) do
-    for _, l in ipairs(t.links) do
-      if l.target == note.path then
-        t:sync()
-        table.insert(file_list, t)
-      end
-    end
-  end
-
-  return file_list
+  return utils.zettelgocmd('list --json --filter ' .. filter)
 end
 
 --- List all links from the current open note to others.
 -- @return table: A list of notes
 actions.links_from_note = function ()
-  local note = nd.box:by_filename(vim.fn.expand('%:t')):sync()
-  local t = {}
+  local note = vim.fn.expand('%:t')
+  local filter = "'{\"linked_from\": \"" .. note .. "\"}'"
 
-  for _, link in ipairs(note.links) do
-    table.insert(t, nd.box:by_filename(link.target))
-  end
-
-  return t
+  return utils.zettelgocmd('list --json --filter ' .. filter)
 end
 
 --- Sync links from the current note
