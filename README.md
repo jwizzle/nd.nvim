@@ -1,5 +1,10 @@
 # Nd.nvim - Notitiedoos/zettelkasten
 
+## LEGACY BRANCH
+
+Caution: This is a legacy branch of notitiedoos, completely written in lua.
+The original project I've mostly replaced with zettelgo.
+
 ## What is this?
 
 Notitiedoos is a Neovim plug-in that helps managing and navigating your [zettelkasten](https://zettelkasten.de/posts/overview/).
