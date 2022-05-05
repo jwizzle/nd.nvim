@@ -3,9 +3,7 @@
 -- But there should be some useful things even when not adhering to my set-up.
 -- The aim is to make things more flexible as soon as more details about usage in general have been worked out.
 local nd = {
-  dir = '~/zettelkasten', -- Your zettelkast directory
   open_new = true, -- Instantly open a newly created zettel
-  suffix = ".md", -- File/zettel suffix
   disable_shortcuts = false, -- Disable all shortcuts
   shortcuts = { -- Set individual shortcuts to false to disable, these are applied in a zettelkast buffer only
     general = {
@@ -35,11 +33,10 @@ nd.setup = function (opts)
   opts = opts or {}
   for k, v in pairs(opts) do nd[k] = v end
 
-  -- Possibly expand ~ to homedir
-  if string.sub(nd.dir, 1, 1) == '~' then
-    local substr = nd.dir:gsub('~', '')
-    nd.dir = os.getenv("HOME") .. substr
-  end
+  -- Set zetteldir
+  nd.dir = require('nd/utils').zettelgoflatcmd('cfg show Directory')
+  -- Set note suffix
+  nd.suffix = require('nd/utils').zettelgoflatcmd('cfg show Note_suffix')
 
   -- Load actions
   nd.actions = require("nd/actions")

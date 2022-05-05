@@ -7,6 +7,10 @@ utils.zettelgocmd = function (cmd)
   return json
 end
 
+utils.zettelgoflatcmd = function (cmd)
+  return utils.os_capture("zettelgo " .. cmd)
+end
+
 --- Capture os command output
 -- @param cmd string: Command to execute
 -- @param raw bool: Capture raw?
