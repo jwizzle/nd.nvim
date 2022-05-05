@@ -11,7 +11,6 @@ a.insert_link = function (prompt_bufnr)
   local selection = action_state.get_selected_entry()
   actions.close(prompt_bufnr)
 
-  print(require('nd/json').encode(selection.value))
   vim.cmd(string.format([[
       exe "normal! a\[\[%s\]\]\<Esc>"
     ]], selection.value.filename))
