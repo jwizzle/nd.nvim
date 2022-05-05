@@ -1,8 +1,4 @@
--- TODO Complete doc revamp for Go version.
---- Notitiedoos, a zettelkasten implementation in Neovim.
--- This is quite opinionated about what headers of zettels should look like for optimal performance.
--- But there should be some useful things even when not adhering to my set-up.
--- The aim is to make things more flexible as soon as more details about usage in general have been worked out.
+--- Notitiedoos, a zettelkasten plugin for neovim, leveraging telescope and zettelgo.
 local nd = {
   open_new = true, -- Instantly open a newly created zettel
   disable_shortcuts = false, -- Disable all shortcuts
@@ -26,7 +22,7 @@ local nd = {
 }
 
 --- Setup the notitiedoos module
--- Load patterns, merge opts, set up a box for notes, etc.
+-- Load merge opts, set up a environment, etc.
 -- @param opts table: Table of options to parse
 -- @return None
 nd.setup = function (opts)

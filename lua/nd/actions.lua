@@ -9,7 +9,6 @@ local actions = {}
 --- Jump to a link under cursor.
 -- Uses vim expansion to get the current word.
 -- Opens the target with :e $target
--- TODO Crashes on non-links
 actions.jump = function ()
   local linktext = vim.fn.expand('<cWORD>')
   local filter = "'{\"link\": \"" .. linktext .. "\"}'"

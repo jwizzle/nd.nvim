@@ -2,6 +2,9 @@
 local utils = {}
 
 -- TODO Stderr freaks out
+--- Execute zettelgo commands, return parsed json
+-- @param cmd arguments for zettelgo
+-- @return table: Table of parsed json
 utils.zettelgocmd = function (cmd)
   local output = utils.os_capture("zettelgo " .. cmd)
   local function parsejson (text)
@@ -17,6 +20,9 @@ utils.zettelgocmd = function (cmd)
   return out
 end
 
+--- Execute a zettelgo command, return string
+-- @param cmd arguments for zettelgo
+-- @return string: Output of command
 utils.zettelgoflatcmd = function (cmd)
   return utils.os_capture("zettelgo " .. cmd)
 end
