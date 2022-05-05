@@ -1,3 +1,4 @@
+-- TODO Complete doc revamp for Go version.
 --- Notitiedoos, a zettelkasten implementation in Neovim.
 -- This is quite opinionated about what headers of zettels should look like for optimal performance.
 -- But there should be some useful things even when not adhering to my set-up.

@@ -9,12 +9,15 @@ local actions = {}
 --- Jump to a link under cursor.
 -- Uses vim expansion to get the current word.
 -- Opens the target with :e $target
+-- TODO Crashes on non-links
 actions.jump = function ()
   local linktext = vim.fn.expand('<cWORD>')
   local filter = "'{\"link\": \"" .. linktext .. "\"}'"
   local linkedjson = utils.zettelgocmd('show --json --filter ' .. filter)
 
-  vim.api.nvim_command(":e " .. linkedjson['path'])
+  if linkedjson ~= "" then
+    vim.api.nvim_command(":e " .. linkedjson['path'])
+  end
 end
 
 --- Create a new note.

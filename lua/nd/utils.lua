@@ -1,10 +1,20 @@
 --- Some random utilities I needed
 local utils = {}
 
+-- TODO Stderr freaks out
 utils.zettelgocmd = function (cmd)
   local output = utils.os_capture("zettelgo " .. cmd)
-  local json = require('nd/json').decode(output)
-  return json
+  local function parsejson (text)
+    local json = require('nd/json').decode(text)
+    return json
+  end
+
+  local status, out = pcall(parsejson, output)
+  if not status then
+    out = ""
+  end
+
+  return out
 end
 
 utils.zettelgoflatcmd = function (cmd)
