@@ -1,6 +1,34 @@
 --- Some random utilities I needed
 local utils = {}
 
+-- TODO Stderr freaks out
+--- Execute zettelgo commands, return parsed json
+-- @param cmd arguments for zettelgo
+-- @return table: Table of parsed json
+utils.zettelgocmd = function (cmd, binary)
+  binary = binary or "zettelgo"
+  local output = utils.os_capture(binary .. " " .. cmd)
+  local function parsejson (text)
+    local json = require('nd/json').decode(text)
+    return json
+  end
+
+  local status, out = pcall(parsejson, output)
+  if not status then
+    out = ""
+  end
+
+  return out
+end
+
+--- Execute a zettelgo command, return string
+-- @param cmd arguments for zettelgo
+-- @return string: Output of command
+utils.zettelgoflatcmd = function (cmd, binary)
+  binary = binary or "zettelgo"
+  return utils.os_capture(binary .. " " .. cmd)
+end
+
 --- Capture os command output
 -- @param cmd string: Command to execute
 -- @param raw bool: Capture raw?

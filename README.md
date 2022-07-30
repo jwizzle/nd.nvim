@@ -2,17 +2,14 @@
 
 ## What is this?
 
-Notitiedoos is a Neovim plug-in that helps managing and navigating your [zettelkasten](https://zettelkasten.de/posts/overview/).
-Mainly by providing [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) interfaces and autojumping to links under your cursor for now. But all actions used by the telescope pickers are also available directly, returning lua tables with results that you can use to populate a fuzzyfinder of your choice.
+Notitiedoos is a Neovim plug-in that provides an interface (mostly by using telescope) to [zettelgo](https://github.com/jwizzle/zettelgo), an application to manage a [zettelkasten](https://zettelkasten.de/posts/overview/) directory on your system.
+A legacy version is available under the 'legacy' branch, which is completely written in Lua, before I decided to completely rewrite the back-end in Go. Which I mostly did to learn, but also turned out to be much faster.
 
-It works by gathering the notes from your configured zettelkasten directory, and parsing data from the headers of your zettels. Which means there are some restrictions on what these notes are supposed to look like before all goodies are available/work correctly. I've written this with configurability and compatibility in mind as much as possible.
-
-The state of this project is currently very new. It works great on my machine, and that's as much as it's been tested. This is the first neovim plug-in I've made so far, and the first lua project. So any and all feedback is welcome.
-Most of the functionality I was looking for myself has been implemented, the way it is used probably won't change in the near future but code is still being rewritten as I go and learn lua. Some new functionality might be added. Reported issues will be looked at whenever I feel like it. Feature requests will be considered if they're in line with something I want, merge requests are better.
+[Some auto-generated very limited docs.](https://jwizzle.github.io/nd.nvim/)
 
 ### Available goodies
 
-* Creates a table with information about your zettels to make navigation a breeze (asynchronously/non-blocking)
+* Creates a table with information about your zettels to make navigation a breeze
   * Search through your zettels with telescope live_grep and find_files from any directory
   * Explore linked notes with telescope
   * Navigate tags and notes that include them
@@ -20,24 +17,35 @@ Most of the functionality I was looking for myself has been implemented, the way
 * Pick a note from telescope, insert a link to it under cursor
 * Jump to links under your cursor
 * Keep links in sync between zettels
-* Should work out of the box, while being customizable enough to work around differences in zettelkasten set-ups
-  * Most heavy-lifting is done by configurable lua pattern strings
 
 ### Showcase
 
 [![asciicast](https://asciinema.org/a/Pdwr4B2nHDyOA6ovi5SxvnICf.svg)](https://asciinema.org/a/Pdwr4B2nHDyOA6ovi5SxvnICf)
 
 Spoiler: when adding a new zettel you see me hessitate to name it 'note 3' instead of 'note3'. At that moment I realized it would create the file with a space, which is horrendous. This is now fixed, if you input the title with a space the header title will contain a space. In the filename this is replaced by an underscore.
+Also, this was recorded back on the legacy branch but functionality should be the same.
 I am too lazy to record it anew.
 
 ## Installation
 
+Notitiedoos depends on zettelgo, which is a Go binary.
+The ':NdInstall' command is a simple wrapper that uses wget and chmod to place a binary in the same folder your package manager installed the nd.lua file to. Use your package manager to keep zettelgo up-to-date automatically. An example with packer is shown below.
+
+Notitiedoos tries to fall back on 'zettelgo' in your path if :NdInstall is not ran.
+
 ```lua
 -- Packer
-use {'jwizzle/nd.nvim', requires = {{'nvim-telescope/telescope.nvim'}, {'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}}
-
--- Somewhere in your config
-require('nd').setup()
+use { 'jwizzle/nd.nvim',
+  requires = {
+    {'nvim-telescope/telescope.nvim'},
+    {'nvim-lua/popup.nvim'},
+    {'nvim-lua/plenary.nvim'}
+  },
+  run=':NdInstall',
+  config = function()
+    require('nd').setup()
+  end,
+}
 ```
 
 ## Usage
@@ -74,28 +82,7 @@ vim.api.nvim_set_keymap('n', '<leader>zlS', "<cmd>lua require('nd').actions.sync
 
 ### About zettels
 
-Zettels/notes are gathered and parsed by the plug-in to be able to find links between them.
-Parsing is done by pattern matching, which means a few elements must exist in your zettels.
-
-This is what a note could look like:
-```
----
-date: 2021-07-14T22:19 //optional
-title: note1  //mandatory
-tags: //not necessarily required in this format, just tag tags with #
-  - #tag1
-  - #tag2
-links: // note required in this format, just mark links with [[]]
-  - note2: [[214806_20210714_note2.md]] //Links can contain the full filename
-  - [[note3]] // links can also contain just the title
-
-[[note 4]] // The list structure i use also isn't mandatory and you can use spaces in titles
----
-
-# title
-
-Everything outside the header is unimportant. In the scope of this plug-in.
-```
+See [zettelgo](https://github.com/jwizzle/zettelgo) for requirements on zettels/notes.
 
 ### Example configuration
 
@@ -103,11 +90,7 @@ With defaults shown.
 
 ```lua
 require('nd').setup({
-  dir = '~/zettelkasten', -- Your zettelkast directory
   open_new = true, -- Instantly open a newly created zettel
-  header_datestring = "%Y-%m-%dT%H:%M", -- Header datestring
-  prefix = "%H%M%S_%Y%m%d", -- File/zettel prefix, takes datestrings
-  suffix = ".md", -- File/zettel suffix
   disable_shortcuts = false, -- Disable all shortcuts
   shortcuts = { -- Set individual shortcuts to false to disable, these are applied in a zettelkast buffer only
     general = {
@@ -125,41 +108,9 @@ require('nd').setup({
       find_tags = 'zt',
       live_grep = 'zg',
     },
-  },
-  note_opts = { -- How to interpret your zettels/headers
-    cachepath = '/tmp/zetteltmp',
-    pattern_set = 'plain', -- The pattern set to use, can be overridden individually
-    pattern_sets = { -- Can be expanded on, mostly here for legacy reasons
-      plain = {
-        header_pattern = "%-%-%-(.-)%-%-%-", -- How to find the header in your zettel
-        link_pattern = "(%[%[%g+%]%])", -- How to identify links in your header
-        tag_pattern = "(#[%g ]+)", -- How to identify tags in your header
-        title_pattern = "title: (.-)\n", -- How to identify the title in your header
-        date_pattern = "date: (.-)\n", -- How to identify the date in your header
-      },
-    },
-    -- Overwrite individual patterns of a set by defining them directly in note_opts
-    -- header_pattern = "$mypattern"
-  },
-  header = [[
----
-date: ${date}
-title: ${title}
-tags:
-links:
----
-
-# ${title}
-
-]], -- Template for new zettels, can interpolate date and title
+  }})
 ```
 
 ## Todo
 
-* Also load links from content, if they exist only, try parsing everything between [[]]
-* Should the notefinding/box functionality be more decoupled from usage in nvim?
 * Renaming zettels
-* More telescope shortcuts
-* Actions to fill the header of current file with links/tags from zettel contents
-* Some caching mechanism/optimizations/prefetching
-* Telescope alternatives/native tools

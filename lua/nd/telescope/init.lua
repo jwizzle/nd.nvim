@@ -48,7 +48,7 @@ ts.find_tags_in_file = function ()
       map('n', '<cr>', actions.open_tag)
       return true
     end,
-    finder = finders.new_table(nd.actions.tags()),
+    finder = finders.new_table(nd.actions.tags_in()),
   })
 end
 

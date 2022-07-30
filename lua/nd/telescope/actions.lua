@@ -12,8 +12,8 @@ a.insert_link = function (prompt_bufnr)
   actions.close(prompt_bufnr)
 
   vim.cmd(string.format([[
-      exe "normal! a%s \<Esc>"
-    ]], selection.value.link))
+      exe "normal! a\[\[%s\]\]\<Esc>"
+    ]], selection.value.filename))
 end
 
 --- Pick a tag to find notes for.
