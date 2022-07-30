@@ -5,8 +5,9 @@ local utils = {}
 --- Execute zettelgo commands, return parsed json
 -- @param cmd arguments for zettelgo
 -- @return table: Table of parsed json
-utils.zettelgocmd = function (cmd)
-  local output = utils.os_capture("zettelgo " .. cmd)
+utils.zettelgocmd = function (cmd, binary)
+  binary = binary or "zettelgo"
+  local output = utils.os_capture(binary .. " " .. cmd)
   local function parsejson (text)
     local json = require('nd/json').decode(text)
     return json
@@ -23,8 +24,9 @@ end
 --- Execute a zettelgo command, return string
 -- @param cmd arguments for zettelgo
 -- @return string: Output of command
-utils.zettelgoflatcmd = function (cmd)
-  return utils.os_capture("zettelgo " .. cmd)
+utils.zettelgoflatcmd = function (cmd, binary)
+  binary = binary or "zettelgo"
+  return utils.os_capture(binary .. " " .. cmd)
 end
 
 --- Capture os command output

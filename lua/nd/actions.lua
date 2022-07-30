@@ -12,7 +12,7 @@ local actions = {}
 actions.jump = function ()
   local linktext = vim.fn.expand('<cWORD>')
   local filter = "'{\"link\": \"" .. linktext .. "\"}'"
-  local linkedjson = utils.zettelgocmd('show --json --filter ' .. filter)
+  local linkedjson = utils.zettelgocmd('show --json --filter ' .. filter, nd.localbinary)
 
   if linkedjson ~= "" then
     vim.api.nvim_command(":e " .. linkedjson['path'])
@@ -33,17 +33,17 @@ end
 
 --- List all notes.
 -- @return table: A table/list of note objects
-actions.list = function () return utils.zettelgocmd('list --json') end
+actions.list = function () return utils.zettelgocmd('list --json', nd.localbinary) end
 
 --- List all tags
 -- @return table: A table/list of tags
-actions.tags = function () return utils.zettelgocmd('list tags --json') end
+actions.tags = function () return utils.zettelgocmd('list tags --json', nd.localbinary) end
 
 --- List all notes with a specific tag.
 -- @return table: A table/list of note objects
 actions.notes_with_tag = function (tag)
   local filter = "'{\"tag\": \"" .. tag .. "\"}'"
-  return utils.zettelgocmd('list --json --filter ' .. filter)
+  return utils.zettelgocmd('list --json --filter ' .. filter, nd.localbinary)
 end
 
 --- List all tags in the current note.
@@ -52,7 +52,7 @@ actions.tags_in = function ()
   local note = vim.fn.expand('%:t')
   local filter = "'{\"filename\": \"" .. note .. "\"}'"
 
-  return utils.zettelgocmd('list tags --json --filter ' .. filter)
+  return utils.zettelgocmd('list tags --json --filter ' .. filter, nd.localbinary)
 end
 
 --- List all links to the current open note.
@@ -61,7 +61,7 @@ actions.links_to_note = function ()
   local note = vim.fn.expand('%:t')
   local filter = "'{\"linking_to\": \"" .. note .. "\"}'"
 
-  return utils.zettelgocmd('list --json --filter ' .. filter)
+  return utils.zettelgocmd('list --json --filter ' .. filter, nd.localbinary)
 end
 
 --- List all links from the current open note to others.
@@ -70,7 +70,7 @@ actions.links_from_note = function ()
   local note = vim.fn.expand('%:t')
   local filter = "'{\"linked_from\": \"" .. note .. "\"}'"
 
-  return utils.zettelgocmd('list --json --filter ' .. filter)
+  return utils.zettelgocmd('list --json --filter ' .. filter, nd.localbinary)
 end
 
 -- TODO Go-side
