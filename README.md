@@ -23,7 +23,20 @@ A legacy version is available under the 'legacy' branch, which is completely wri
 [![asciicast](https://asciinema.org/a/Pdwr4B2nHDyOA6ovi5SxvnICf.svg)](https://asciinema.org/a/Pdwr4B2nHDyOA6ovi5SxvnICf)
 
 Spoiler: when adding a new zettel you see me hessitate to name it 'note 3' instead of 'note3'. At that moment I realized it would create the file with a space, which is horrendous. This is now fixed, if you input the title with a space the header title will contain a space. In the filename this is replaced by an underscore.
-Also, this was recorded back on the legacy branch but functionality should be the same.
+Also, this was recorded back on the legacy branch but functionality should be the same mostly. The main difference being in how headers work. Links are now a table/hash like:
+```
+---
+date: 2021-09-20T21:11
+title: Some dnd campaign notes
+tags:
+  - #tabletop
+  - #dnd
+links:
+  index: [[235812_20210730_dnd_index.md]] 
+  npcs: [[236913_20210731_dnd_npcs.md]]
+---
+```
+
 I am too lazy to record it anew.
 
 ## Installation
