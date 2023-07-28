@@ -11,6 +11,7 @@ local nd = {
       gather = 'zG',
       sync_links = 'zls',
       sync_all_links = 'zlS',
+      rename = 'zrn'
     },
     telescope = {
       find_notes = 'zf',

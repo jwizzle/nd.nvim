@@ -31,6 +31,12 @@ actions.new = function ()
   if nd.open_new then vim.api.nvim_command(":e " .. filepath) end
 end
 
+--- Rename the current note.
+--- TODO
+actions.rename = function ()
+  local title = vim.fn.input('New title: ')
+end
+
 --- List all notes.
 -- @return table: A table/list of note objects
 actions.list = function () return utils.zettelgocmd('list --json', nd.localbinary) end
