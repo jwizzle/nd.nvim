@@ -15,7 +15,10 @@ utils.zettelgocmd = function (cmd, binary)
 
   local status, out = pcall(parsejson, output)
   if not status then
-    out = ""
+    out = {{
+        path = "zettelgo " .. cmd .. " failed",
+        title = "ERROR - See :messages"
+      }}
   end
 
   return out
@@ -26,7 +29,7 @@ end
 -- @return string: Output of command
 utils.zettelgoflatcmd = function (cmd, binary)
   binary = binary or "zettelgo"
-  return utils.os_capture(binary .. " " .. cmd)
+  return utils.os_capture(binary .. " " .. cmd) or ""
 end
 
 --- Capture os command output
@@ -35,7 +38,13 @@ end
 utils.os_capture = function (cmd, raw)
   local f = assert(io.popen(cmd, 'r'))
   local s = assert(f:read('*a'))
-  f:close()
+  local exitcode = f:close()
+
+  if s == "" or exitcode == nil then
+    print("Cmd failed, try executing " .. cmd .. " manually and see what's wrong.")
+    return nil
+  end
+
   if raw then return s end
   s = string.gsub(s, '^%s+', '')
   s = string.gsub(s, '%s+$', '')
