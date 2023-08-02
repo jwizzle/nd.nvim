@@ -24,11 +24,10 @@ build = {
       ["nd.utils"] = "lua/nd/utils.lua"
    },
    copy_directories = {
-      "docs"
+      "docs",
+      "plugin"
    }
 }
 dependencies = {
-   "popup.nvim",
-   "plenary.nvim",
    "luasocket",
 }

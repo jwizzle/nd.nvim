@@ -1,5 +1,5 @@
 local utils = require("nd/utils")
-local http = require("socket.http")
+-- local http = require("socket.http")
 
 --- Notitiedoos, a zettelkasten plugin for neovim, leveraging telescope and zettelgo.
 local nd = {
@@ -29,19 +29,21 @@ local nd = {
 vim.api.nvim_create_user_command(
     'NdInstall',
     function()
+      print(debug.getinfo(1).source)
       local datadir = debug.getinfo(1).source:match("@?(.*/)")
-      nd.localbinary = datadir .. "zettelgo"
-      local zettelgo_release = "https://github.com/jwizzle/zettelgo/releases/download/v1.0.4/zettelgo-linux-amd64"
-
-      local body, code = http.request(zettelgo_release)
-      if not body then error(code) end
-      local f = assert(io.open(nd.localbinary, 'wb'))
-      f:write(body)
-      f:close()
-
-      utils.os_capture("chmod -v +x " .. nd.localbinary)
-
-      print("Downloaded zettelgo to: " .. nd.localbinary)
+      print(datadir)
+--       nd.localbinary = datadir .. "zettelgo"
+--       local zettelgo_release = "https://github.com/jwizzle/zettelgo/releases/download/v1.0.4/zettelgo-linux-amd64"
+-- 
+--       local body, code = http.request(zettelgo_release)
+--       if not body then error(code) end
+--       local f = assert(io.open(nd.localbinary, 'wb'))
+--       f:write(body)
+--       f:close()
+-- 
+--       utils.os_capture("chmod -v +x " .. nd.localbinary)
+-- 
+--       print("Downloaded zettelgo to: " .. nd.localbinary)
     end,
     {}
 )
