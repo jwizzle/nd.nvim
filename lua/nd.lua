@@ -31,8 +31,8 @@ vim.api.nvim_create_user_command(
       local datadir = debug.getinfo(1).source:match("@?(.*/)")
       nd.localbinary = datadir .. "zettelgo"
       local zettelgo_release = "https://github.com/jwizzle/zettelgo/releases/download/v1.0.4/zettelgo-linux-amd64"
-      utils.os_capture("wget --quiet -O " .. nd.localbinary .. " " .. zettelgo_release)
-      utils.os_capture("chmod +x " .. nd.localbinary)
+      utils.os_capture("wget -nv -O " .. nd.localbinary .. " " .. zettelgo_release .. " 2>&1")
+      utils.os_capture("chmod -v +x " .. nd.localbinary)
 
       print("Downloaded zettelgo to: " .. nd.localbinary)
     end,
