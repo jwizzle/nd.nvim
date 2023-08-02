@@ -30,7 +30,24 @@ vim.api.nvim_create_user_command(
     function()
       local datadir = debug.getinfo(1).source:match("@?(.*/)")
       nd.localbinary = datadir .. "zettelgo"
-      local zettelgo_release = "https://github.com/jwizzle/zettelgo/releases/download/v1.0.4/zettelgo-linux-amd64"
+      local uname = utils.os_capture("uname -m")
+      local arch = ""
+
+      if uname == "x86_64" then
+        arch = "amd64"
+      elseif uname == "arm32" then
+        arch = "arm"
+      elseif uname == "arm64" then
+        arch = "arm64"
+      elseif uname == "i386" then
+        arch = "386"
+      else
+        print("Not on a supported platform for :NdInstall, try compiling zettelgo manually (see: github.com/jwizzle/zettelgo).")
+        return
+      end
+
+      local zettelgo_release = "https://github.com/jwizzle/zettelgo/releases/download/v1.0.4/zettelgo-linux-" .. arch
+
       utils.os_capture("wget -nv -O " .. nd.localbinary .. " " .. zettelgo_release .. " 2>&1")
       utils.os_capture("chmod -v +x " .. nd.localbinary)
 
@@ -68,8 +85,6 @@ nd.setup = function (opts)
 
   -- Initialize shortcuts
   if not nd.disable_shortcuts then require('nd/shortcuts').setup(nd.shortcuts) end
-
-  -- print(require('nd/json').encode(nd.box.notes))
 end
 
 return nd
