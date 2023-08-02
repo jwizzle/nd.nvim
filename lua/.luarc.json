@@ -1,8 +1,0 @@
-{
-    "workspace.library": [
-        "/home/jwiersma/.local/share/nvim/site/pack/packer/opt/neodev.nvim/types/stable",
-        "/tmp/.mount_nvim.aBY1V1u/usr/share/nvim/runtime/lua",
-        "/home/jwiersma/Documents/personal/nd.nvim/lua",
-        "${3rd}/luv/library"
-    ]
-}
